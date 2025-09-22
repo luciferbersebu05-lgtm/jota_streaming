@@ -9,7 +9,9 @@ async function fetchAndDisplayAccounts() {
     accountsListDiv.innerHTML = "<p>Cargando cuentas...</p>";
     try {
         const response = await fetch(backendUrl + "/api/accounts");
-        const accounts = await response.json();
+        
+        // La variable 'accounts' se crea aquí y solo existe dentro de esta función 'try'
+        const accounts = await response.json(); 
 
         accountsListDiv.innerHTML = ""; // Limpia el contenedor
 
@@ -18,15 +20,16 @@ async function fetchAndDisplayAccounts() {
             return;
         }
 
+        // El bucle que usa 'accounts' está correctamente aquí dentro
         accounts.forEach(account => {
             const accountCard = document.createElement('div');
-            accountCard.className = 'account-card'; // Para darle estilo con CSS después
+            accountCard.className = 'account-card';
             
             accountCard.innerHTML = `
                 <h3>${account.service_name}</h3>
                 <p>${account.description}</p>
                 <p class="price"><b>Precio:</b> S/ ${account.price}</p>
-                <button>Comprar</button>
+                <button class="buy-btn" data-id="${account.id}">Comprar</button>
             `;
             
             accountsListDiv.appendChild(accountCard);
@@ -38,18 +41,42 @@ async function fetchAndDisplayAccounts() {
     }
 }
 
-// --- 2. FUNCIÓN PARA MANEJAR EL ENVÍO DEL FORMULARIO ---
-addAccountForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita que la página se recargue
+// --- 2. CÓDIGO PARA MANEJAR CLICS EN LOS BOTONES DE COMPRA ---
+accountsListDiv.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('buy-btn')) {
+        const accountId = event.target.dataset.id;
+        
+        if (!confirm(`¿Estás seguro de que quieres comprar la cuenta con ID ${accountId}?`)) {
+            return;
+        }
 
-    const serviceName = document.getElementById('service_name').value;
-    const description = document.getElementById('description').value;
-    const price = document.getElementById('price').value;
+        try {
+            const response = await fetch(`${backendUrl}/api/accounts/${accountId}/sell`, {
+                method: 'PATCH'
+            });
+
+            if (!response.ok) {
+                throw new Error('La compra falló');
+            }
+
+            alert('¡Cuenta comprada con éxito!');
+            fetchAndDisplayAccounts();
+
+        } catch (error) {
+            console.error('Error al comprar la cuenta:', error);
+            alert('Hubo un error durante la compra.');
+        }
+    }
+});
+
+// --- 3. CÓDIGO PARA MANEJAR EL ENVÍO DEL FORMULARIO ---
+addAccountForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
     const newAccountData = {
-        service_name: serviceName,
-        description: description,
-        price: parseFloat(price)
+        service_name: document.getElementById('service_name').value,
+        description: document.getElementById('description').value,
+        price: parseFloat(document.getElementById('price').value)
     };
 
     try {
@@ -63,12 +90,9 @@ addAccountForm.addEventListener('submit', async (event) => {
             throw new Error('Error en la respuesta del servidor');
         }
 
-        const createdAccount = await response.json();
-        console.log('Cuenta creada:', createdAccount);
         alert('¡Cuenta añadida con éxito!');
-        
-        addAccountForm.reset(); // Limpia el formulario
-        fetchAndDisplayAccounts(); // Recarga la lista de cuentas
+        addAccountForm.reset();
+        fetchAndDisplayAccounts();
 
     } catch (error) {
         console.error('Error al añadir la cuenta:', error);
@@ -76,58 +100,5 @@ addAccountForm.addEventListener('submit', async (event) => {
     }
 });
 
-// --- 1. FUNCIÓN PARA OBTENER Y MOSTRAR LAS CUENTAS (CON AJUSTES) ---
-async function fetchAndDisplayAccounts() {
-    // ... (código de fetch y manejo de errores sin cambios) ...
-
-    accounts.forEach(account => {
-        const accountCard = document.createElement('div');
-        accountCard.className = 'account-card';
-        
-        accountCard.innerHTML = `
-            <h3>${account.service_name}</h3>
-            <p>${account.description}</p>
-            <p class="price"><b>Precio:</b> S/ ${account.price}</p>
-            
-            <button class="buy-btn" data-id="${account.id}">Comprar</button>
-        `;
-        
-        accountsListDiv.appendChild(accountCard);
-    });
-}
-
-
-// --- 2. CÓDIGO NUEVO PARA MANEJAR CLICS EN LOS BOTONES DE COMPRA ---
-accountsListDiv.addEventListener('click', async (event) => {
-    // Solo reacciona si se hizo clic en un elemento con la clase 'buy-btn'
-    if (event.target.classList.contains('buy-btn')) {
-        const accountId = event.target.dataset.id;
-        
-        // Muestra una confirmación simple
-        if (!confirm(`¿Estás seguro de que quieres comprar la cuenta con ID ${accountId}?`)) {
-            return; // Si el usuario cancela, no hace nada
-        }
-
-        try {
-            const response = await fetch(`${backendUrl}/api/accounts/${accountId}/sell`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-            });
-
-            if (!response.ok) {
-                throw new Error('La compra falló');
-            }
-
-            alert('¡Cuenta comprada con éxito!');
-            fetchAndDisplayAccounts(); // Recarga la lista para que la cuenta comprada desaparezca
-
-        } catch (error) {
-            console.error('Error al comprar la cuenta:', error);
-            alert('Hubo un error durante la compra.');
-        }
-    }
-});
-
-// --- 3. LLAMADA INICIAL AL CARGAR LA PÁGINA ---
-// Llama a la función para mostrar las cuentas tan pronto como se carga la página.
+// --- 4. LLAMADA INICIAL AL CARGAR LA PÁGINA ---
 fetchAndDisplayAccounts();
