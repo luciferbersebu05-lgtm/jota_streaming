@@ -1,5 +1,6 @@
 # backend/jotastreaming.py
 import os
+import traceback # <-- Importante añadir esta línea al inicio del archivo
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from flask import Flask, jsonify, request
@@ -42,33 +43,36 @@ def home():
 
 @app.route("/api/accounts", methods=['GET', 'POST'])
 def handle_accounts():
-    # Si la petición es POST, se añade una nueva cuenta
     if request.method == 'POST':
         try:
             data = request.get_json()
             if not data or not data.get('service_name') or not data.get('price'):
-                return jsonify({"error": "Faltan datos requeridos (service_name, price)"}), 400
+                return jsonify({"error": "Faltan datos requeridos"}), 400
 
-            # Usa el cliente de Supabase para insertar la nueva cuenta
             response = supabase.table('account').insert({
                 'service_name': data.get('service_name'),
                 'description': data.get('description'),
                 'price': data.get('price')
             }).execute()
-
-            # El cliente de Supabase devuelve una lista, así que tomamos el primer elemento
+            
             return jsonify(response.data[0]), 201
         except Exception as e:
-            return jsonify({"error": str(e)}), 500
+            # Líneas de depuración que SÍ aparecerán en los logs de Render
+            print("!!!!!!!!!! ERROR AL PROCESAR POST !!!!!!!!!!", flush=True)
+            print(f"Error: {e}", flush=True)
+            traceback.print_exc() # Imprime el Traceback completo
+            return jsonify({"error": "Error interno del servidor, revisar logs."}), 500
 
-    # Si la petición es GET, se listan las cuentas
-    else: # (request.method == 'GET')
+    else: # GET
         try:
-            # Usa el cliente de Supabase para obtener las cuentas
             response = supabase.table('account').select("*").eq('is_sold', False).execute()
             return jsonify(response.data)
         except Exception as e:
-            return jsonify({"error": str(e)}), 500
+            # Líneas de depuración para el GET por si acaso
+            print("!!!!!!!!!! ERROR AL PROCESAR GET !!!!!!!!!!", flush=True)
+            print(f"Error: {e}", flush=True)
+            traceback.print_exc()
+            return jsonify({"error": "Error interno del servidor, revisar logs."}), 500
         
 @app.route("/api/accounts/<int:account_id>/sell", methods=['PATCH'])
 def sell_account(account_id):
