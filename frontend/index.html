@@ -12,6 +12,8 @@
 </head>
 <body>
 
+    <div id="toast-container"></div>
+
     <header>
         <nav>
             <div class="logo-container" id="logo-clickable-area">
@@ -50,11 +52,44 @@
                 <div class="service-card"><img src="https://logo.clearbit.com/youtube.com" alt="YouTube Premium"></div>
             </div>
         </section>
-        
+
+        <div id="user-section" style="display: none;">
+            <h2>Panel de Usuario</h2>
+            <p>Bienvenido, <b id="user-email"></b></p>
+            <button id="logout-button">Cerrar Sesión</button>
+            <hr>
+        </div>
+
+        <div id="add-account-section" style="display: none;">
+            <h2>Añadir Nueva Cuenta</h2>
+            <form id="add-account-form">
+                <label for="service_name">Servicio:</label>
+                <input type="text" id="service_name" name="service_name" placeholder="Ej: Netflix" required>
+                <label for="description">Descripción:</label>
+                <input type="text" id="description" name="description" placeholder="Ej: Plan Premium 1 Mes">
+                <label for="price">Precio (S/):</label>
+                <input type="number" id="price" name="price" step="0.01" placeholder="Ej: 25.50" required>
+                <button type="submit">Añadir Cuenta</button>
+            </form>
+            <hr>
+        </div>
+
+        <div id="admin-panel" style="display: none;">
+             <h2>Panel de Administrador: Crear Usuario</h2>
+            <form id="create-user-form">
+                <label for="user_email">Email del Usuario:</label>
+                <input type="email" id="user_email" required>
+                <label for="user_password">Contraseña:</label>
+                <input type="password" id="user_password" required>
+                <button type="submit">Crear Usuario</button>
+            </form>
+            <hr>
+        </div>
+
         <section class="accounts-section">
             <h2>Cuentas Disponibles</h2>
             <div id="accounts-list">
-                <p>Inicia sesión para ver las cuentas.</p>
+                <p>Cargando cuentas...</p>
             </div>
         </section>
     </main>
@@ -65,7 +100,7 @@
 
     <div id="login-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <h2>Iniciar Sesión</h2>
             <form id="login-form">
                 <label for="login_email">Email o Nombre de Usuario:</label>
@@ -79,7 +114,7 @@
 
     <div id="register-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <h2>Crear una Cuenta</h2>
             <form id="register-form">
                 <label for="register_username">Nombre de Usuario:</label>
@@ -93,26 +128,6 @@
         </div>
     </div>
     
-    <div id="auth-section"></div>
-    <div id="user-section" style="display: none;">
-        <span id="user-email"></span>
-        <button id="logout-button">Cerrar Sesión</button>
-    </div>
-    <div id="add-account-section" style="display: none;">
-        <form id="add-account-form"></form>
-    </div>
-    <div id="admin-panel" style="display: none;">
-        <form id="create-user-form"></form>
-    </div>
-    
     <script type="module" src="static/js/main.js"></script>
-    <div id="custom-alert-container" class="custom-alert-container">
-        <div id="custom-alert-message" class="custom-alert-message"></div>
-        <button id="custom-alert-button" class="custom-alert-button">Aceptar</button>
-    </div>
-    
-    <script type="module" src="static/js/main.js"></script>
-</body>
-</html>
 </body>
 </html>
