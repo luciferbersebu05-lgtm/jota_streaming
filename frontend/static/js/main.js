@@ -49,7 +49,6 @@ const closeModal = () => {
     registerModal.style.display = 'none';
 };
 
-// Asignación inicial de eventos a elementos estáticos
 logoClickableArea.addEventListener('click', openLoginModal);
 ctaButton.addEventListener('click', openRegisterModal);
 serviceCards.forEach(card => card.addEventListener('click', openLoginModal));
@@ -62,11 +61,12 @@ window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeModal();
 });
 
+
 // --- LÓGICA DE LA APLICACIÓN ---
 
-// GESTIONAR ESTADO DE LA SESIÓN Y LA NAVEGACIÓN
+// GESTIONAR ESTADO DE LA SESIÓN Y LA NAVEGACIÓN (LA PARTE MÁS IMPORTANTE)
 supabase.auth.onAuthStateChange((_event, session) => {
-    navLinks.innerHTML = ''; // Limpia la navegación para redibujarla
+    navLinks.innerHTML = ''; // Limpia la navegación actual
 
     if (session) {
         // --- VISTA PARA USUARIO CON SESIÓN INICIADA ---
@@ -74,17 +74,20 @@ supabase.auth.onAuthStateChange((_event, session) => {
         dashboardContent.style.display = 'block';
         userEmailDashboard.textContent = session.user.email;
         
+        // Crea los botones de "Mi Panel" y "Cerrar Sesión"
         const userNavHTML = `
-            <li><a href="#" class="nav-btn-primary">Mi Panel</a></li>
+            <li><a href="#" id="dashboard-link" class="nav-btn-primary">Mi Panel</a></li>
             <li><button id="logout-btn-nav" class="nav-btn">Cerrar Sesión</button></li>
         `;
         navLinks.innerHTML = userNavHTML;
 
+        // Asigna eventos a los nuevos botones
         document.getElementById('logout-btn-nav').addEventListener('click', async () => {
             await supabase.auth.signOut();
             showToast('Has cerrado sesión.');
         });
         
+        // Muestra el panel de admin si el email coincide
         if (session.user.email === ADMIN_EMAIL) {
             adminPanel.style.display = 'block';
         } else {
@@ -96,6 +99,7 @@ supabase.auth.onAuthStateChange((_event, session) => {
         mainContent.style.display = 'block';
         dashboardContent.style.display = 'none';
         
+        // Crea los botones de "Mercado", "Iniciar sesión" y "Registrarse"
         const guestNavHTML = `
             <li><a href="#services">Mercado</a></li>
             <li><button id="login-btn-nav" class="nav-btn">Iniciar sesión</button></li>
@@ -103,55 +107,12 @@ supabase.auth.onAuthStateChange((_event, session) => {
         `;
         navLinks.innerHTML = guestNavHTML;
 
+        // Asigna eventos a los nuevos botones
         document.getElementById('login-btn-nav').addEventListener('click', openLoginModal);
         document.getElementById('register-btn-nav').addEventListener('click', openRegisterModal);
     }
 });
 
-// OBTENER Y MOSTRAR CUENTAS
-async function fetchAndDisplayAccounts() {
-    accountsListDiv.innerHTML = "<p>Cargando cuentas...</p>";
-    try {
-        const response = await fetch(`${backendUrl}/api/accounts`);
-        if (!response.ok) throw new Error('Error al cargar datos');
-        const accounts = await response.json();
-        accountsListDiv.innerHTML = "";
-        if (accounts.length === 0) {
-            accountsListDiv.innerHTML = "<p>No hay cuentas disponibles.</p>";
-            return;
-        }
-        accounts.forEach(account => {
-            const accountCard = document.createElement('div');
-            accountCard.className = 'account-card';
-            accountCard.innerHTML = `<h3>${account.service_name}</h3><p>${account.description}</p><p class="price"><b>Precio:</b> S/ ${account.price}</p><button class="buy-btn" data-id="${account.id}">Comprar</button>`;
-            accountsListDiv.appendChild(accountCard);
-        });
-    } catch (error) {
-        console.error("Error al obtener las cuentas:", error);
-        accountsListDiv.innerHTML = "<p>Hubo un error al cargar las cuentas.</p>";
-    }
-}
-
-// MANEJAR REGISTRO DE USUARIO
-registerForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const username = document.getElementById('register_username').value;
-    const email = document.getElementById('register_email').value;
-    const password = document.getElementById('register_password').value;
-
-    if (password.length < 6) {
-        showToast("La contraseña debe tener al menos 6 caracteres.", 'error');
-        return;
-    }
-    const { error } = await supabase.auth.signUp({ email, password, options: { data: { username } } });
-    if (error) {
-        showToast("Error al registrar: " + error.message, 'error');
-    } else {
-        closeModal();
-        showToast("¡Registro exitoso! Tu cuenta está pendiente de aprobación.");
-        registerForm.reset();
-    }
-});
 
 // MANEJAR INICIO DE SESIÓN
 loginForm.addEventListener('submit', async (event) => {
@@ -178,10 +139,95 @@ loginForm.addEventListener('submit', async (event) => {
     } else {
         closeModal();
         showToast('¡Inicio de sesión exitoso!');
+        // La redirección ya no es necesaria, onAuthStateChange se encargará de todo
     }
 });
 
-// MANEJAR FORMULARIO DE AÑADIR CUENTA
+// MANEJAR REGISTRO DE USUARIO
+registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const username = document.getElementById('register_username').value;
+    const email = document.getElementById('register_email').value;
+    const password = document.getElementById('register_password').value;
+
+    if (password.length < 6) {
+        showToast("La contraseña debe tener al menos 6 caracteres.", 'error');
+        return;
+    }
+    const { error } = await supabase.auth.signUp({ email, password, options: { data: { username } } });
+    if (error) {
+        showToast("Error al registrar: " + error.message, 'error');
+    } else {
+        closeModal();
+        showToast("¡Registro exitoso! Tu cuenta está pendiente de aprobación.");
+        registerForm.reset();
+    }
+});
+
+// 3. MANEJAR INICIO DE SESIÓN
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const identifier = document.getElementById('login_email').value;
+    const password = document.getElementById('login_password').value;
+    let email = identifier;
+
+    if (!identifier.includes('@')) {
+        try {
+            const response = await fetch(`${backendUrl}/api/get-email-by-username/${identifier}`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Usuario no encontrado');
+            email = data.email;
+        } catch (error) {
+            showToast('Error: ' + error.message, 'error');
+            return;
+        }
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        showToast('Error al iniciar sesión: Credenciales inválidas', 'error');
+    } else {
+        closeModal();
+        showToast('¡Inicio de sesión exitoso!');
+
+        // 👇 LÍNEA AÑADIDA PARA REDIRIGIR AUTOMÁTICAMENTE 👇
+        window.location.href = 'dashboard.html';
+    }
+});
+
+// 4. MANEJAR CIERRE DE SESIÓN
+logoutButton.addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    showToast('Has cerrado sesión.');
+});
+
+// 5. GESTIONAR ESTADO DE LA SESIÓN
+supabase.auth.onAuthStateChange((_event, session) => {
+    const mainContent = document.querySelector('main');
+    if (session) {
+        loginBtnNav.style.display = 'none';
+        registerBtnNav.style.display = 'none';
+        userSection.style.display = 'block';
+        userEmailSpan.textContent = session.user.email;
+        addAccountSection.style.display = 'block';
+        mainContent.style.display = 'none'; // Oculta el hero y las tarjetas
+        if (session.user.email === ADMIN_EMAIL) {
+            adminPanel.style.display = 'block';
+        } else {
+            adminPanel.style.display = 'none';
+        }
+    } else {
+        loginBtnNav.style.display = 'block';
+        registerBtnNav.style.display = 'block';
+        userSection.style.display = 'none';
+        userEmailSpan.textContent = '';
+        addAccountSection.style.display = 'none';
+        adminPanel.style.display = 'none';
+        mainContent.style.display = 'block'; // Muestra el hero y las tarjetas
+    }
+});
+
+// 6. MANEJAR FORMULARIO DE AÑADIR CUENTA
 addAccountForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
@@ -197,7 +243,10 @@ addAccountForm.addEventListener('submit', async (event) => {
         };
         const response = await fetch(`${backendUrl}/api/accounts`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+            },
             body: JSON.stringify(newAccountData),
         });
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
@@ -210,7 +259,7 @@ addAccountForm.addEventListener('submit', async (event) => {
     }
 });
 
-// MANEJAR FORMULARIO DE CREAR USUARIO (ADMIN)
+// 7. MANEJAR FORMULARIO DE CREAR USUARIO (ADMIN)
 createUserForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const email = document.getElementById('user_email').value;
@@ -231,7 +280,7 @@ createUserForm.addEventListener('submit', async (event) => {
     }
 });
 
-// MANEJAR CLICS EN BOTONES DE COMPRA
+// 8. MANEJAR CLICS EN BOTONES DE COMPRA
 accountsListDiv.addEventListener('click', async (event) => {
     if (event.target.classList.contains('buy-btn')) {
         const accountId = event.target.dataset.id;
@@ -244,7 +293,9 @@ accountsListDiv.addEventListener('click', async (event) => {
             }
             const response = await fetch(`${backendUrl}/api/accounts/${accountId}/sell`, {
                 method: 'PATCH',
-                headers: { 'Authorization': `Bearer ${session.access_token}` }
+                headers: {
+                    'Authorization': `Bearer ${session.access_token}`
+                }
             });
             if (!response.ok) throw new Error('La compra falló');
             showToast('¡Cuenta comprada con éxito!');
