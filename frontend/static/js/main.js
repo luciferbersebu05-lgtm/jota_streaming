@@ -10,10 +10,13 @@ const ADMIN_EMAIL = "luciferbersebu@gmail.com";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- SELECCIÓN DE TODOS LOS ELEMENTOS DEL DOM ---
+const navLinks = document.getElementById('nav-links');
+const mainContent = document.getElementById('main-content');
+const dashboardContent = document.getElementById('dashboard-content');
+const userEmailDashboard = document.getElementById('user-email-dashboard');
+const adminPanel = document.getElementById('admin-panel');
 const loginModal = document.getElementById('login-modal');
 const registerModal = document.getElementById('register-modal');
-const loginBtnNav = document.getElementById('login-btn-nav');
-const registerBtnNav = document.getElementById('register-btn-nav');
 const closeButtons = document.querySelectorAll('.close-btn');
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
@@ -22,11 +25,6 @@ const createUserForm = document.getElementById('create-user-form');
 const logoClickableArea = document.getElementById('logo-clickable-area');
 const serviceCards = document.querySelectorAll('.service-card');
 const ctaButton = document.querySelector('.cta-button');
-const userSection = document.getElementById('user-section');
-const addAccountSection = document.getElementById('add-account-section');
-const adminPanel = document.getElementById('admin-panel');
-const userEmailSpan = document.getElementById('user-email');
-const logoutButton = document.getElementById('logout-button');
 const accountsListDiv = document.getElementById('accounts-list');
 const toastContainer = document.getElementById('toast-container');
 
@@ -36,9 +34,7 @@ function showToast(message, type = 'success') {
     toast.className = `toast ${type}`;
     toast.textContent = message;
     toastContainer.appendChild(toast);
-    setTimeout(() => {
-        toast.classList.add('show');
-    }, 100);
+    setTimeout(() => { toast.classList.add('show'); }, 100);
     setTimeout(() => {
         toast.classList.remove('show');
         toast.addEventListener('transitionend', () => toast.remove());
@@ -53,48 +49,101 @@ const closeModal = () => {
     registerModal.style.display = 'none';
 };
 
-loginBtnNav.addEventListener('click', openLoginModal);
-registerBtnNav.addEventListener('click', openRegisterModal);
-closeButtons.forEach(button => button.addEventListener('click', closeModal));
 logoClickableArea.addEventListener('click', openLoginModal);
-ctaButton.addEventListener('click', openLoginModal);
+ctaButton.addEventListener('click', openRegisterModal);
 serviceCards.forEach(card => card.addEventListener('click', openLoginModal));
+closeButtons.forEach(button => button.addEventListener('click', closeModal));
 
 window.addEventListener('click', (event) => {
     if (event.target === loginModal || event.target === registerModal) closeModal();
 });
-
 window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeModal();
 });
 
+
 // --- LÓGICA DE LA APLICACIÓN ---
 
-// 1. OBTENER Y MOSTRAR CUENTAS
-async function fetchAndDisplayAccounts() {
-    accountsListDiv.innerHTML = "<p>Cargando cuentas...</p>";
-    try {
-        const response = await fetch(`${backendUrl}/api/accounts`);
-        if (!response.ok) throw new Error('Error al cargar datos');
-        const accounts = await response.json();
-        accountsListDiv.innerHTML = "";
-        if (accounts.length === 0) {
-            accountsListDiv.innerHTML = "<p>No hay cuentas disponibles.</p>";
+// GESTIONAR ESTADO DE LA SESIÓN Y LA NAVEGACIÓN (LA PARTE MÁS IMPORTANTE)
+supabase.auth.onAuthStateChange((_event, session) => {
+    navLinks.innerHTML = ''; // Limpia la navegación actual
+
+    if (session) {
+        // --- VISTA PARA USUARIO CON SESIÓN INICIADA ---
+        mainContent.style.display = 'none';
+        dashboardContent.style.display = 'block';
+        userEmailDashboard.textContent = session.user.email;
+        
+        // Crea los botones de "Mi Panel" y "Cerrar Sesión"
+        const userNavHTML = `
+            <li><a href="#" id="dashboard-link" class="nav-btn-primary">Mi Panel</a></li>
+            <li><button id="logout-btn-nav" class="nav-btn">Cerrar Sesión</button></li>
+        `;
+        navLinks.innerHTML = userNavHTML;
+
+        // Asigna eventos a los nuevos botones
+        document.getElementById('logout-btn-nav').addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            showToast('Has cerrado sesión.');
+        });
+        
+        // Muestra el panel de admin si el email coincide
+        if (session.user.email === ADMIN_EMAIL) {
+            adminPanel.style.display = 'block';
+        } else {
+            adminPanel.style.display = 'none';
+        }
+
+    } else {
+        // --- VISTA PARA VISITANTES ---
+        mainContent.style.display = 'block';
+        dashboardContent.style.display = 'none';
+        
+        // Crea los botones de "Mercado", "Iniciar sesión" y "Registrarse"
+        const guestNavHTML = `
+            <li><a href="#services">Mercado</a></li>
+            <li><button id="login-btn-nav" class="nav-btn">Iniciar sesión</button></li>
+            <li><button id="register-btn-nav" class="nav-btn-primary">Registrarse</button></li>
+        `;
+        navLinks.innerHTML = guestNavHTML;
+
+        // Asigna eventos a los nuevos botones
+        document.getElementById('login-btn-nav').addEventListener('click', openLoginModal);
+        document.getElementById('register-btn-nav').addEventListener('click', openRegisterModal);
+    }
+});
+
+
+// MANEJAR INICIO DE SESIÓN
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const identifier = document.getElementById('login_email').value;
+    const password = document.getElementById('login_password').value;
+    let email = identifier;
+
+    if (!identifier.includes('@')) {
+        try {
+            const response = await fetch(`${backendUrl}/api/get-email-by-username/${identifier}`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Usuario no encontrado');
+            email = data.email;
+        } catch (error) {
+            showToast('Error: ' + error.message, 'error');
             return;
         }
-        accounts.forEach(account => {
-            const accountCard = document.createElement('div');
-            accountCard.className = 'account-card';
-            accountCard.innerHTML = `<h3>${account.service_name}</h3><p>${account.description}</p><p class="price"><b>Precio:</b> S/ ${account.price}</p><button class="buy-btn" data-id="${account.id}">Comprar</button>`;
-            accountsListDiv.appendChild(accountCard);
-        });
-    } catch (error) {
-        console.error("Error al obtener las cuentas:", error);
-        accountsListDiv.innerHTML = "<p>Hubo un error al cargar las cuentas.</p>";
     }
-}
 
-// 2. MANEJAR REGISTRO DE USUARIO
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+        showToast('Error al iniciar sesión: Credenciales inválidas', 'error');
+    } else {
+        closeModal();
+        showToast('¡Inicio de sesión exitoso!');
+        // La redirección ya no es necesaria, onAuthStateChange se encargará de todo
+    }
+});
+
+// MANEJAR REGISTRO DE USUARIO
 registerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const username = document.getElementById('register_username').value;

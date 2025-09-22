@@ -6,8 +6,6 @@
     <title>Jota Streaming - Cuentas de Streaming</title>
     <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
     <link rel="stylesheet" href="static/css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -15,28 +13,16 @@
     <div id="toast-container"></div>
 
     <header>
-    <nav>
-        <div class="logo-container" id="logo-clickable-area">
-            <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
-            <span>Jota Streaming</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#services">Mercado</a></li>
-            
-            <li id="guest-links">
-                <button id="login-btn-nav" class="nav-btn">Iniciar sesión</button>
-                <button id="register-btn-nav" class="nav-btn-primary">Registrarse</button>
-            </li>
-            
-            <li id="user-links" style="display: none;">
-                <a href="dashboard.html" class="nav-btn-primary">Mi Panel</a>
-                <button id="logout-btn-nav" class="nav-btn">Cerrar Sesión</button>
-            </li>
-        </ul>
-    </nav>
-</header>
+        <nav>
+            <div class="logo-container" id="logo-clickable-area">
+                <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
+                <span>Jota Streaming</span>
+            </div>
+            <ul id="nav-links" class="nav-links"></ul>
+        </nav>
+    </header>
 
-    <main>
+    <main id="main-content">
         <section class="hero">
             <h1>El Mejor Lugar para tus Cuentas de Streaming</h1>
             <p>Compra y vende de forma segura y rápida.</p>
@@ -60,15 +46,14 @@
                 <div class="service-card"><img src="https://logo.clearbit.com/youtube.com" alt="YouTube Premium"></div>
             </div>
         </section>
+    </main>
 
-        <div id="user-section" style="display: none;">
-            <h2>Panel de Usuario</h2>
-            <p>Bienvenido, <b id="user-email"></b></p>
-            <button id="logout-button">Cerrar Sesión</button>
-            <hr>
-        </div>
+    <div id="dashboard-content" class="container" style="display: none;">
+        <h2>Panel de Usuario</h2>
+        <p>Bienvenido, <b id="user-email-dashboard"></b></p>
+        <hr>
 
-        <div id="add-account-section" style="display: none;">
+        <div id="add-account-section">
             <h2>Añadir Nueva Cuenta</h2>
             <form id="add-account-form">
                 <label for="service_name">Servicio:</label>
@@ -79,8 +64,8 @@
                 <input type="number" id="price" name="price" step="0.01" placeholder="Ej: 25.50" required>
                 <button type="submit">Añadir Cuenta</button>
             </form>
-            <hr>
         </div>
+        <hr>
 
         <div id="admin-panel" style="display: none;">
              <h2>Panel de Administrador: Crear Usuario</h2>
@@ -91,16 +76,16 @@
                 <input type="password" id="user_password" required>
                 <button type="submit">Crear Usuario</button>
             </form>
-            <hr>
         </div>
-
+        <hr>
+        
         <section class="accounts-section">
             <h2>Cuentas Disponibles</h2>
             <div id="accounts-list">
                 <p>Cargando cuentas...</p>
             </div>
         </section>
-    </main>
+    </div>
     
     <footer>
         <p>© 2025 Jota Streaming. Todos los derechos reservados.</p>
