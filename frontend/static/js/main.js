@@ -1,24 +1,26 @@
 // frontend/static/js/main.js
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+// --- CONFIGURACIÓN ---
 const SUPABASE_URL = 'https://sprraxgaqivlayzrhqqz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwcnJheGdhcWl2bGF5enJocXF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0NzEyNzksImV4cCI6MjA3NDA0NzI3OX0.Gsi_h090KK_GPKOCDg_4S6nx6QyDHbEF7teg9IJhNlw';
+const backendUrl = "https://jota-streaming-backend.onrender.com";
+
+// --- INICIALIZACIÓN DE CLIENTES ---
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// --- SELECCIÓN DE ELEMENTOS DEL DOM ---
+// --- SELECCIÓN DE TODOS LOS ELEMENTOS DEL DOM (AQUÍ ARRIBA) ---
 const loginModal = document.getElementById('login-modal');
 const registerModal = document.getElementById('register-modal');
 const loginBtnNav = document.getElementById('login-btn-nav');
 const registerBtnNav = document.getElementById('register-btn-nav');
 const closeButtons = document.querySelectorAll('.close-btn');
-
+const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
-
-// --- NUEVO: Selección de elementos clickeables ---
 const logoClickableArea = document.getElementById('logo-clickable-area');
 const serviceCards = document.querySelectorAll('.service-card');
 const ctaButton = document.querySelector('.cta-button');
-
+const accountsListDiv = document.getElementById('accounts-list'); // Movido aquí arriba
 
 // --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
 const openLoginModal = () => loginModal.style.display = 'flex';
@@ -31,12 +33,9 @@ const closeModal = () => {
 loginBtnNav.addEventListener('click', openLoginModal);
 registerBtnNav.addEventListener('click', openRegisterModal);
 closeButtons.forEach(button => button.addEventListener('click', closeModal));
-
-// --- NUEVO: Event listeners para nuevos elementos ---
 logoClickableArea.addEventListener('click', openLoginModal);
 ctaButton.addEventListener('click', openLoginModal);
 serviceCards.forEach(card => card.addEventListener('click', openLoginModal));
-
 
 window.addEventListener('click', (event) => {
     if (event.target === loginModal || event.target === registerModal) {
@@ -55,16 +54,14 @@ registerForm.addEventListener('submit', async (event) => {
         email: email,
         password: password,
         options: {
-            data: {
-                username: username
-            }
+            data: { username: username }
         }
     });
 
     if (error) {
         alert("Error al registrar: " + error.message);
     } else {
-        closeModal(); // Cierra la ventana
+        closeModal();
         alert("¡Registro exitoso! Tu cuenta está pendiente de aprobación por un administrador.");
         registerForm.reset();
     }
