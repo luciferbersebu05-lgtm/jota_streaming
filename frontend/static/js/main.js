@@ -14,21 +14,33 @@ const closeButtons = document.querySelectorAll('.close-btn');
 
 const registerForm = document.getElementById('register-form');
 
-// --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
-loginBtnNav.addEventListener('click', () => loginModal.style.display = 'flex');
-registerBtnNav.addEventListener('click', () => registerModal.style.display = 'flex');
+// --- NUEVO: Selección de elementos clickeables ---
+const logoClickableArea = document.getElementById('logo-clickable-area');
+const serviceCards = document.querySelectorAll('.service-card');
+const ctaButton = document.querySelector('.cta-button');
 
-closeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        loginModal.style.display = 'none';
-        registerModal.style.display = 'none';
-    });
-});
+
+// --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
+const openLoginModal = () => loginModal.style.display = 'flex';
+const openRegisterModal = () => registerModal.style.display = 'flex';
+const closeModal = () => {
+    loginModal.style.display = 'none';
+    registerModal.style.display = 'none';
+};
+
+loginBtnNav.addEventListener('click', openLoginModal);
+registerBtnNav.addEventListener('click', openRegisterModal);
+closeButtons.forEach(button => button.addEventListener('click', closeModal));
+
+// --- NUEVO: Event listeners para nuevos elementos ---
+logoClickableArea.addEventListener('click', openLoginModal);
+ctaButton.addEventListener('click', openLoginModal);
+serviceCards.forEach(card => card.addEventListener('click', openLoginModal));
+
 
 window.addEventListener('click', (event) => {
     if (event.target === loginModal || event.target === registerModal) {
-        loginModal.style.display = 'none';
-        registerModal.style.display = 'none';
+        closeModal();
     }
 });
 
@@ -39,7 +51,6 @@ registerForm.addEventListener('submit', async (event) => {
     const email = document.getElementById('register_email').value;
     const password = document.getElementById('register_password').value;
 
-    // Usamos 'options.data' para pasar información extra como el nombre de usuario
     const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
@@ -53,7 +64,7 @@ registerForm.addEventListener('submit', async (event) => {
     if (error) {
         alert("Error al registrar: " + error.message);
     } else {
-        registerModal.style.display = 'none'; // Cierra la ventana
+        closeModal(); // Cierra la ventana
         alert("¡Registro exitoso! Tu cuenta está pendiente de aprobación por un administrador.");
         registerForm.reset();
     }

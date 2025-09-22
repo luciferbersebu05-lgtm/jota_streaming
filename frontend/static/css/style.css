@@ -17,13 +17,19 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color);
+    /* --- NUEVO: Fondo de pantalla --- */
+    background-image: linear-gradient(rgba(22, 22, 26, 0.9), rgba(22, 22, 26, 0.9)), url('static/img/fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* ------------------------------ */
     color: var(--text-color);
 }
 
 /* --- BARRA DE NAVEGACIÓN --- */
 header {
-    background-color: var(--background-color);
+    background-color: rgba(22, 22, 26, 0.8);
+    backdrop-filter: blur(10px);
     padding: 1rem 5%;
     position: sticky;
     top: 0;
@@ -43,6 +49,8 @@ nav {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--headline-color);
+    /* --- NUEVO: Cursor de mano --- */
+    cursor: pointer;
 }
 
 .logo-img {
@@ -139,11 +147,26 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* --- NUEVO: Transición suave y cursor de mano --- */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+/* --- NUEVO: Efecto de levantar la tarjeta --- */
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .service-card img {
     max-width: 100px;
     height: auto;
+    filter: grayscale(50%); /* Opcional: para que se vean más integradas */
+    transition: filter 0.3s ease;
+}
+
+.service-card:hover img {
+    filter: grayscale(0%);
 }
 
 /* --- VENTANAS EMERGENTES (MODALES) --- */
