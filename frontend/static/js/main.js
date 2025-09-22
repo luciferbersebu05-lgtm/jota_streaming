@@ -1,26 +1,63 @@
-// Se importa el cliente de Supabase desde la URL de su CDN
+// frontend/static/js/main.js
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// --- CONFIGURACIÓN ---
 const SUPABASE_URL = 'https://sprraxgaqivlayzrhqqz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwcnJheGdhcWl2bGF5enJocXF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0NzEyNzksImV4cCI6MjA3NDA0NzI3OX0.Gsi_h090KK_GPKOCDg_4S6nx6QyDHbEF7teg9IJhNlw';
-const backendUrl = "https://jota-streaming-backend.onrender.com";
-
-// --- INICIALIZACIÓN DE CLIENTES Y ELEMENTOS DEL DOM ---
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const accountsListDiv = document.getElementById('accounts-list');
-const addAccountForm = document.getElementById('add-account-form');
-const createUserForm = document.getElementById('create-user-form');
-const loginForm = document.getElementById('login-form');
-const authSection = document.getElementById('auth-section');
-const userSection = document.getElementById('user-section');
-const userEmailSpan = document.getElementById('user-email');
-const logoutButton = document.getElementById('logout-button');
-// --- Elementos del DOM para las nuevas secciones ---
-const addAccountSection = document.getElementById('add-account-section');
-const adminPanel = document.getElementById('admin-panel');
-// El email de tu cuenta de administrador (puedes ponerlo en una variable para fácil acceso)
-const ADMIN_EMAIL = "luciferbersebu05@gmail.com";
+
+// --- SELECCIÓN DE ELEMENTOS DEL DOM ---
+const loginModal = document.getElementById('login-modal');
+const registerModal = document.getElementById('register-modal');
+const loginBtnNav = document.getElementById('login-btn-nav');
+const registerBtnNav = document.getElementById('register-btn-nav');
+const closeButtons = document.querySelectorAll('.close-btn');
+
+const registerForm = document.getElementById('register-form');
+
+// --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
+loginBtnNav.addEventListener('click', () => loginModal.style.display = 'flex');
+registerBtnNav.addEventListener('click', () => registerModal.style.display = 'flex');
+
+closeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        loginModal.style.display = 'none';
+        registerModal.style.display = 'none';
+    });
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === loginModal || event.target === registerModal) {
+        loginModal.style.display = 'none';
+        registerModal.style.display = 'none';
+    }
+});
+
+// --- LÓGICA DE REGISTRO CON NOMBRE DE USUARIO ---
+registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const username = document.getElementById('register_username').value;
+    const email = document.getElementById('register_email').value;
+    const password = document.getElementById('register_password').value;
+
+    // Usamos 'options.data' para pasar información extra como el nombre de usuario
+    const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            data: {
+                username: username
+            }
+        }
+    });
+
+    if (error) {
+        alert("Error al registrar: " + error.message);
+    } else {
+        registerModal.style.display = 'none'; // Cierra la ventana
+        alert("¡Registro exitoso! Tu cuenta está pendiente de aprobación por un administrador.");
+        registerForm.reset();
+    }
+});
 
 // --- LÓGICA DE LA APLICACIÓN ---
 

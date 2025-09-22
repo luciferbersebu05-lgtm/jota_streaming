@@ -1,102 +1,220 @@
-/* Estilo general del cuerpo de la página */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    line-height: 1.6;
+/* frontend/static/css/style.css */
+
+:root {
+    --primary-color: #7f5af0;
+    --secondary-color: #2cb67d;
+    --background-color: #16161a;
+    --text-color: #94a1b2;
+    --headline-color: #fffffe;
+    --card-background: #242629;
+}
+
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* --- BARRA DE NAVEGACIÓN --- */
+header {
+    background-color: var(--background-color);
+    padding: 1rem 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--card-background);
+}
+
+nav {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
 }
 
-/* Contenedor principal para centrar el contenido */
-.container {
-    width: 100%;
-    max-width: 800px;
-    background: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.logo-container {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--headline-color);
 }
 
-h1, h2 {
-    color: #1a1a1a;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 10px;
-    margin-top: 20px;
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
 }
 
-/* Estilos para los formularios */
-form {
-    margin-bottom: 20px;
-    padding: 20px;
-    background-color: #fafafa;
-    border: 1px solid #ddd;
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: var(--headline-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-btn, .nav-btn-primary {
+    border: none;
+    padding: 0.5rem 1rem;
     border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.nav-btn {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"] {
+.nav-btn-primary {
+    background-color: var(--primary-color);
+    color: var(--headline-color);
+}
+
+/* --- SECCIONES PRINCIPALES --- */
+main {
+    padding: 2rem 5%;
+}
+
+.hero {
+    text-align: center;
+    padding: 6rem 0;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    color: var(--headline-color);
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    background-color: var(--primary-color);
+    color: var(--headline-color);
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.services {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.services h2 {
+    font-size: 2.5rem;
+    color: var(--headline-color);
+    margin-bottom: 3rem;
+}
+
+.service-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.service-card img {
+    max-width: 100px;
+    height: auto;
+}
+
+/* --- VENTANAS EMERGENTES (MODALES) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
 }
 
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
+.modal-content {
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    color: var(--headline-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.modal-content label {
+    display: block;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--background-color);
+    color: var(--headline-color);
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--primary-color);
+    color: var(--headline-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    font-weight: 600;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
-
-/* Estilos para las tarjetas de las cuentas */
-#accounts-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.account-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
-
-.account-card h3 {
-    margin-top: 0;
-}
-
-.account-card .price {
-    font-weight: bold;
-    color: #28a745;
-}
-
-hr {
-    border: 0;
-    height: 1px;
-    background: #e0e0e0;
-    margin: 40px 0;
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 2rem 5%;
+    margin-top: 4rem;
+    border-top: 1px solid var(--card-background);
 }
