@@ -122,16 +122,16 @@ registerForm.addEventListener('submit', async (event) => {
     const password = document.getElementById('register_password').value;
 
     if (password.length < 6) {
-        alert("La contraseña debe tener al menos 6 caracteres.");
+        showAlert("La contraseña debe tener al menos 6 caracteres."); // <-- CAMBIO
         return;
     }
 
     const { error } = await supabase.auth.signUp({ email, password, options: { data: { username } } });
     if (error) {
-        alert("Error al registrar: " + error.message);
+        showAlert("Error al registrar: " + error.message); // <-- CAMBIO
     } else {
         closeModal();
-        alert("¡Registro exitoso! Tu cuenta está pendiente de aprobación.");
+        showAlert("¡Registro exitoso! Tu cuenta está pendiente de aprobación."); // <-- CAMBIO
         registerForm.reset();
     }
 });
@@ -150,24 +150,24 @@ loginForm.addEventListener('submit', async (event) => {
             if (!response.ok) throw new Error(data.error || 'Usuario no encontrado');
             email = data.email;
         } catch (error) {
-            alert('Error: ' + error.message);
+            showAlert('Error: ' + error.message); // <-- CAMBIO
             return;
         }
     }
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-        alert('Error al iniciar sesión: ' + error.message);
+        showAlert('Error al iniciar sesión: ' + error.message); // <-- CAMBIO
     } else {
         closeModal();
-        alert('¡Inicio de sesión exitoso!');
+        showAlert('¡Inicio de sesión exitoso!'); // <-- CAMBIO
     }
 });
 
 // 4. MANEJAR CIERRE DE SESIÓN
 logoutButton.addEventListener('click', async () => {
     await supabase.auth.signOut();
-    alert('Has cerrado sesión.');
+    showAlert('Has cerrado sesión.'); // <-- CAMBIO
 });
 
 // 5. GESTIONAR ESTADO DE LA SESIÓN (MOSTRAR/OCULTAR ELEMENTOS)
@@ -197,7 +197,7 @@ addAccountForm.addEventListener('submit', async (event) => {
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-            alert("Debes iniciar sesión para añadir una cuenta.");
+            showAlert("Debes iniciar sesión para añadir una cuenta."); // <-- CAMBIO
             return;
         }
 
@@ -218,12 +218,12 @@ addAccountForm.addEventListener('submit', async (event) => {
 
         if (!response.ok) throw new Error('Error en la respuesta del servidor');
         
-        alert('¡Cuenta añadida con éxito!');
+        showAlert('¡Cuenta añadida con éxito!'); // <-- CAMBIO
         addAccountForm.reset();
         fetchAndDisplayAccounts();
     } catch (error) {
         console.error('Error al añadir la cuenta:', error);
-        alert('Hubo un error al añadir la cuenta.');
+        showAlert('Hubo un error al añadir la cuenta.'); // <-- CAMBIO
     }
 });
 
@@ -240,11 +240,11 @@ createUserForm.addEventListener('submit', async (event) => {
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || 'Error al crear el usuario');
-        alert(`¡Usuario ${result.user.email} creado con éxito!`);
+        showAlert(`¡Usuario ${result.user.email} creado con éxito!`); // <-- CAMBIO
         createUserForm.reset();
     } catch (error) {
         console.error('Error en el formulario de creación de usuario:', error);
-        alert(error.message);
+        showAlert(error.message); // <-- CAMBIO
     }
 });
 
@@ -252,16 +252,20 @@ createUserForm.addEventListener('submit', async (event) => {
 accountsListDiv.addEventListener('click', async (event) => {
     if (event.target.classList.contains('buy-btn')) {
         const accountId = event.target.dataset.id;
-        if (!confirm(`¿Estás seguro de comprar la cuenta ID ${accountId}?`)) return;
+        // Para el confirm, es más complejo reemplazarlo con un modal personalizado,
+        // ya que la función confirm() detiene el JavaScript hasta que se decide.
+        // Por ahora, dejamos el confirm nativo, pero si quieres uno personalizado,
+        // necesitaríamos una función async/await para el custom confirm.
+        if (!confirm(`¿Estás seguro de comprar la cuenta ID ${accountId}?`)) return; 
+        
         try {
-            // Nota: Esta acción debería estar protegida en el backend también
             const response = await fetch(`${backendUrl}/api/accounts/${accountId}/sell`, { method: 'PATCH' });
             if (!response.ok) throw new Error('La compra falló');
-            alert('¡Cuenta comprada con éxito!');
+            showAlert('¡Cuenta comprada con éxito!'); // <-- CAMBIO
             fetchAndDisplayAccounts();
         } catch (error) {
             console.error('Error al comprar la cuenta:', error);
-            alert('Hubo un error durante la compra.');
+            showAlert('Hubo un error durante la compra.'); // <-- CAMBIO
         }
     }
 });
