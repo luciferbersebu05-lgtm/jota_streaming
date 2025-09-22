@@ -93,10 +93,14 @@ main {
 
 .hero {
     text-align: center;
-    padding: 8rem 2rem;
-    border-radius: 10px;
-    margin-bottom: 4rem;
-    /* --- RUTA CORREGIDA AQUÍ --- */
+    padding: 2rem;
+    /* --- CAMBIOS AQUÍ --- */
+    min-height: 100vh; /* Altura mínima del 100% de la ventana */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* --- FIN DE CAMBIOS --- */
     background-image: linear-gradient(rgba(22, 22, 26, 0.7), rgba(22, 22, 26, 0.7)), url('../img/fondo.png');
     background-size: cover;
     background-position: center;
@@ -162,12 +166,8 @@ main {
 .service-card img {
     max-width: 100px;
     height: auto;
-    filter: grayscale(50%); /* Opcional: para que se vean más integradas */
-    transition: filter 0.3s ease;
-}
-
-.service-card:hover img {
-    filter: grayscale(0%);
+    border-radius: 8px; /* <-- LÍNEA AÑADIDA */
+    /* Se quitaron los filtros */
 }
 
 /* --- VENTANAS EMERGENTES (MODALES) --- */
