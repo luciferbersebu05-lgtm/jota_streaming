@@ -7,73 +7,91 @@
     <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/dashboard.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+        const SUPABASE_URL = 'https://sprraxgaqivlayzrhqqz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwcnJheGdhcWl2bGF5enJocXF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0NzEyNzksImV4cCI6MjA3NDA0NzI3OX0.Gsi_h090KK_GPKOCDg_4S6nx6QyDHbEF7teg9IJhNlw';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        (async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                // Si no hay sesión, lo redirige a la página principal
+                window.location.replace("index.html");
+            }
+        })();
+    </script>
+
+    <div id="toast-container"></div>
 
     <header>
         <nav>
-            <div class="logo-container" id="logo-clickable-area">
+            <a href="index.html" class="logo-container">
                 <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
                 <span>Jota Streaming</span>
-            </div>
-            <ul class="nav-links">
-                <li><button id="login-btn-nav" class="nav-btn">Iniciar sesión</button></li>
-                <li><button id="register-btn-nav" class="nav-btn-primary">Registrarse</button></li>
-            </ul>
+            </a>
+            <ul id="nav-links" class="nav-links"></ul>
         </nav>
     </header>
 
     <main class="dashboard-main">
         <section class="hero-slider-container">
-    <div class="hero-slider">
-        <div class="slide" style="background-image: url('static/img/pelicula1.png');"></div>
-        <div class="slide" style="background-image: url('static/img/pelicula2.png');"></div>
-        <div class="slide" style="background-image: url('static/img/pelicula1.png');"></div> 
-    </div>
-    <button class="slider-btn prev-btn">‹</button>
-    <button class="slider-btn next-btn">›</button>
-</section>
-
-        <section class="horizontal-scroll-section">
-            <h2>Cuentas Destacadas</h2>
-            <div class="horizontal-scroll-container">
-                <div class="product-card-horizontal">
-                    <img src="https://logo.clearbit.com/netflix.com" alt="Netflix">
-                    <h4>Netflix Premium</h4>
-                    <span>S/ 9.50</span>
-                </div>
-                <div class="product-card-horizontal">
-                    <img src="https://logo.clearbit.com/spotify.com" alt="Spotify">
-                    <h4>Spotify Individual</h4>
-                    <span>S/ 5.00</span>
-                </div>
-                <div class="product-card-horizontal">
-                    <img src="https://logo.clearbit.com/disneyplus.com" alt="Disney+">
-                    <h4>Disney+ Mensual</h4>
-                    <span>S/ 6.20</span>
-                </div>
-                </div>
+            <div class="hero-slider">
+                <div class="slide" style="background-image: url('static/img/pelicula1.png');"></div>
+                <div class="slide" style="background-image: url('static/img/pelicula2.png');"></div>
+            </div>
+            <button class="slider-btn prev-btn">‹</button>
+            <button class="slider-btn next-btn">›</button>
         </section>
 
-        <section class="main-grid-section">
-            <h2>Catálogo General</h2>
-            <div class="main-grid-container">
-                <div class="product-card-grid">
-                    <div class="stock-indicator">Stock: 5</div>
-                    <img src="https://logo.clearbit.com/hbo.com" alt="HBO Max">
-                    <h3>HBO Max - 1 Mes</h3>
-                    <p>Acceso completo por 30 días.</p>
-                    <span class="price">S/ 7.00</span>
-                    <button class="buy-button">Comprar</button>
+        <div class="container">
+            <h2>Panel de Usuario</h2>
+            <p>Bienvenido, <b id="user-email-dashboard"></b></p>
+            <hr>
+    
+            <div id="add-account-section">
+                <h2>Añadir Nueva Cuenta</h2>
+                <form id="add-account-form">
+                    <label for="service_name">Servicio:</label>
+                    <input type="text" id="service_name" name="service_name" placeholder="Ej: Netflix" required>
+                    <label for="description">Descripción:</label>
+                    <input type="text" id="description" name="description" placeholder="Ej: Plan Premium 1 Mes">
+                    <label for="price">Precio (S/):</label>
+                    <input type="number" id="price" name="price" step="0.01" placeholder="Ej: 25.50" required>
+                    <button type="submit">Añadir Cuenta</button>
+                </form>
+            </div>
+            <hr>
+    
+            <div id="admin-panel" style="display: none;">
+                 <h2>Panel de Administrador: Crear Usuario</h2>
+                <form id="create-user-form">
+                    <label for="user_email">Email del Usuario:</label>
+                    <input type="email" id="user_email" required>
+                    <label for="user_password">Contraseña:</label>
+                    <input type="password" id="user_password" required>
+                    <button type="submit">Crear Usuario</button>
+                </form>
+            </div>
+            <hr>
+            
+            <section class="accounts-section">
+                <h2>Mis Cuentas Disponibles</h2>
+                <div id="accounts-list" class="main-grid-container">
+                    <p>Cargando cuentas...</p>
                 </div>
-                </div>
-        </section>
+            </section>
+        </div>
     </main>
+    
+    <footer>
+        <p>© 2025 Jota Streaming. Todos los derechos reservados.</p>
+    </footer>
 
-    <script type="module" src="static/js/dashboard.js"></script>
     <script type="module" src="static/js/main.js"></script> 
+    <script type="module" src="static/js/dashboard.js"></script>
 </body>
 </html>
