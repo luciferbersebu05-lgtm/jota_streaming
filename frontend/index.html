@@ -15,18 +15,26 @@
     <div id="toast-container"></div>
 
     <header>
-        <nav>
-            <div class="logo-container" id="logo-clickable-area">
-                <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
-                <span>Jota Streaming</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#services">Mercado</a></li>
-                <li><button id="login-btn-nav" class="nav-btn">Iniciar sesión</button></li>
-                <li><button id="register-btn-nav" class="nav-btn-primary">Registrarse</button></li>
-            </ul>
-        </nav>
-    </header>
+    <nav>
+        <div class="logo-container" id="logo-clickable-area">
+            <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
+            <span>Jota Streaming</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#services">Mercado</a></li>
+            
+            <li id="guest-links">
+                <button id="login-btn-nav" class="nav-btn">Iniciar sesión</button>
+                <button id="register-btn-nav" class="nav-btn-primary">Registrarse</button>
+            </li>
+            
+            <li id="user-links" style="display: none;">
+                <a href="dashboard.html" class="nav-btn-primary">Mi Panel</a>
+                <button id="logout-btn-nav" class="nav-btn">Cerrar Sesión</button>
+            </li>
+        </ul>
+    </nav>
+</header>
 
     <main>
         <section class="hero">

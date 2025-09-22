@@ -28,15 +28,17 @@ const adminPanel = document.getElementById('admin-panel');
 const userEmailSpan = document.getElementById('user-email');
 const logoutButton = document.getElementById('logout-button');
 const accountsListDiv = document.getElementById('accounts-list');
+const toastContainer = document.getElementById('toast-container');
 
 // --- LÓGICA DE NOTIFICACIONES "TOAST" ---
 function showToast(message, type = 'success') {
-    const toastContainer = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.textContent = message;
     toastContainer.appendChild(toast);
-    setTimeout(() => { toast.classList.add('show'); }, 100);
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
     setTimeout(() => {
         toast.classList.remove('show');
         toast.addEventListener('transitionend', () => toast.remove());

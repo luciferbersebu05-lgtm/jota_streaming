@@ -1,0 +1,153 @@
+/* frontend/static/css/dashboard.css */
+
+.dashboard-main {
+    padding: 0;
+    width: 100%;
+}
+
+/* --- ESTILOS DEL BANNER SLIDER --- */
+.hero-slider-container {
+    width: 100%;
+    height: 60vh; /* 60% de la altura de la ventana */
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slider {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    font-size: 2.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
+/* --- ESTILOS DEL SCROLL HORIZONTAL --- */
+.horizontal-scroll-section {
+    padding: 2rem 5%;
+}
+.horizontal-scroll-section h2 {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.horizontal-scroll-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Permite el scroll horizontal */
+    padding-bottom: 20px; /* Espacio para la barra de scroll */
+    /* Ocultar la barra de scroll (opcional) */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.horizontal-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.product-card-horizontal {
+    flex: 0 0 200px; /* No crece, no se encoge, base de 200px */
+    background-color: var(--card-background);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+}
+.product-card-horizontal img {
+    max-width: 80px;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+.product-card-horizontal h4 {
+    color: var(--headline-color);
+}
+.product-card-horizontal span {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+/* --- ESTILOS DEL GRID PRINCIPAL CON EFECTO DE LUZ --- */
+.main-grid-section {
+    padding: 2rem 5%;
+}
+
+.main-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.product-card-grid {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden; /* Importante para el efecto */
+    border: 1px solid transparent;
+    transition: border 0.3s ease;
+}
+
+/* El efecto de luz */
+.product-card-grid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(
+        from 180deg at 50% 50%,
+        #7f5af0, #2cb67d, #e74c3c, #7f5af0
+    );
+    filter: blur(20px);
+    transform: scale(1.5);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 0;
+}
+
+.product-card-grid:hover::before {
+    opacity: 1;
+}
+
+/* Contenido de la tarjeta por encima del efecto */
+.product-card-grid > * {
+    position: relative;
+    z-index: 1;
+}
+
+.stock-indicator {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.product-card-grid img { max-width: 100px; margin-bottom: 1rem; }
+.product-card-grid h3 { color: var(--headline-color); }
+.product-card-grid p { margin: 0.5rem 0 1rem; }
+.product-card-grid .price { font-size: 1.5rem; color: var(--secondary-color); font-weight: bold; }
+.product-card-grid .buy-button { width: 100%; margin-top: 1rem; }

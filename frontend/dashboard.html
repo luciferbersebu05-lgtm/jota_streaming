@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Jota Streaming</title>
+    <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo-container" id="logo-clickable-area">
+                <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
+                <span>Jota Streaming</span>
+            </div>
+            <ul class="nav-links">
+                <li><button id="login-btn-nav" class="nav-btn">Iniciar sesión</button></li>
+                <li><button id="register-btn-nav" class="nav-btn-primary">Registrarse</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="hero-slider-container">
+    <div class="hero-slider">
+        <div class="slide" style="background-image: url('static/img/pelicula1.png');"></div>
+        <div class="slide" style="background-image: url('static/img/pelicula2.png');"></div>
+        <div class="slide" style="background-image: url('static/img/pelicula1.png');"></div> 
+    </div>
+    <button class="slider-btn prev-btn">‹</button>
+    <button class="slider-btn next-btn">›</button>
+</section>
+
+        <section class="horizontal-scroll-section">
+            <h2>Cuentas Destacadas</h2>
+            <div class="horizontal-scroll-container">
+                <div class="product-card-horizontal">
+                    <img src="https://logo.clearbit.com/netflix.com" alt="Netflix">
+                    <h4>Netflix Premium</h4>
+                    <span>S/ 9.50</span>
+                </div>
+                <div class="product-card-horizontal">
+                    <img src="https://logo.clearbit.com/spotify.com" alt="Spotify">
+                    <h4>Spotify Individual</h4>
+                    <span>S/ 5.00</span>
+                </div>
+                <div class="product-card-horizontal">
+                    <img src="https://logo.clearbit.com/disneyplus.com" alt="Disney+">
+                    <h4>Disney+ Mensual</h4>
+                    <span>S/ 6.20</span>
+                </div>
+                </div>
+        </section>
+
+        <section class="main-grid-section">
+            <h2>Catálogo General</h2>
+            <div class="main-grid-container">
+                <div class="product-card-grid">
+                    <div class="stock-indicator">Stock: 5</div>
+                    <img src="https://logo.clearbit.com/hbo.com" alt="HBO Max">
+                    <h3>HBO Max - 1 Mes</h3>
+                    <p>Acceso completo por 30 días.</p>
+                    <span class="price">S/ 7.00</span>
+                    <button class="buy-button">Comprar</button>
+                </div>
+                </div>
+        </section>
+    </main>
+
+    <script type="module" src="static/js/dashboard.js"></script>
+    <script type="module" src="static/js/main.js"></script> 
+</body>
+</html>
