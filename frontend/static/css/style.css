@@ -242,3 +242,59 @@ footer {
     margin-top: 4rem;
     border-top: 1px solid var(--card-background);
 }
+
+/* --- ESTILOS PARA LAS ALERTAS PERSONALIZADAS --- */
+.custom-alert-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegura que esté por encima de todo */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.custom-alert-container.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.custom-alert-message {
+    background-color: var(--card-background); /* Color de fondo similar a tus modales */
+    color: var(--headline-color);
+    padding: 2rem 3rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 400px;
+    font-size: 1.1rem;
+    position: relative;
+    transform: translateY(-20px); /* Efecto para que "aparezca" */
+    transition: transform 0.3s ease;
+}
+
+.custom-alert-container.show .custom-alert-message {
+    transform: translateY(0);
+}
+
+.custom-alert-button {
+    background-color: var(--primary-color); /* Color de botón principal */
+    color: var(--headline-color);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1.5rem; /* Espacio entre mensaje y botón */
+    transition: background-color 0.2s ease;
+}
+
+.custom-alert-button:hover {
+    background-color: #6a47e0; /* Un tono más oscuro al pasar el ratón */
+}

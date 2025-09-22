@@ -29,6 +29,9 @@ const adminPanel = document.getElementById('admin-panel');
 const userEmailSpan = document.getElementById('user-email');
 const logoutButton = document.getElementById('logout-button');
 const accountsListDiv = document.getElementById('accounts-list');
+const customAlertContainer = document.getElementById('custom-alert-container');
+const customAlertMessage = document.getElementById('custom-alert-message');
+const customAlertButton = document.getElementById('custom-alert-button');
 
 // --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
 const openLoginModal = () => loginModal.style.display = 'flex';
@@ -53,6 +56,27 @@ window.addEventListener('click', (event) => {
 
 window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+
+// --- FUNCIÓN DE ALERTA PERSONALIZADA ---
+function showAlert(message) {
+    customAlertMessage.textContent = message;
+    customAlertContainer.classList.add('show');
+    customAlertButton.focus(); // Para que el botón sea seleccionable con teclado
+}
+
+// CERRAR LA ALERTA PERSONALIZADA
+customAlertButton.addEventListener('click', () => {
+    customAlertContainer.classList.remove('show');
+});
+
+// Cerrar alerta también con 'Escape'
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && customAlertContainer.classList.contains('show')) {
+        customAlertContainer.classList.remove('show');
+    } else if (event.key === 'Escape') { // También cierra modales si están abiertos
         closeModal();
     }
 });
