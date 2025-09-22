@@ -40,25 +40,46 @@ class Account(db.Model):
 def home():
     return "¡El backend de Jota Streaming está funcionando!"
 
-@app.route("/api/accounts", methods=['POST'])
-def add_account():
+@app.route("/api/accounts", methods=['GET', 'POST'])
+def handle_accounts():
+    # Si la petición es POST, se añade una nueva cuenta
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            if not data or not data.get('service_name') or not data.get('price'):
+                return jsonify({"error": "Faltan datos requeridos (service_name, price)"}), 400
+
+            response = supabase.table('account').insert({
+                'service_name': data.get('service_name'),
+                'description': data.get('description'),
+                'price': data.get('price')
+            }).execute()
+
+            return jsonify(response.data[0]), 201
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    # Si la petición es GET (o cualquier otra), se listan las cuentas
+    else: # (request.method == 'GET')
+        try:
+            response = supabase.table('account').select("*").eq('is_sold', False).execute()
+            return jsonify(response.data)
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        
+@app.route("/api/accounts/<int:account_id>/sell", methods=['PATCH'])
+def sell_account(account_id):
     try:
-        # 1. Obtiene los datos enviados desde el frontend
-        data = request.get_json()
+        # Actualiza la cuenta en la base de datos, cambiando is_sold a True
+        response = supabase.table('account').update({
+            'is_sold': True
+        }).eq('id', account_id).execute()
 
-        # 2. Valida que los datos necesarios están presentes (puedes añadir más validaciones)
-        if not data or not data.get('service_name') or not data.get('price'):
-            return jsonify({"error": "Faltan datos requeridos (service_name, price)"}), 400
+        # Verifica si se actualizó algún registro
+        if not response.data:
+            return jsonify({"error": "Cuenta no encontrada"}), 404
 
-        # 3. Inserta la nueva cuenta en la tabla 'account'
-        response = supabase.table('account').insert({
-            'service_name': data.get('service_name'),
-            'description': data.get('description'),
-            'price': data.get('price')
-        }).execute()
-
-        # 4. Devuelve el registro recién creado
-        return jsonify(response.data[0]), 201
+        return jsonify(response.data[0])
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

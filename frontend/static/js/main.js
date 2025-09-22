@@ -76,6 +76,57 @@ addAccountForm.addEventListener('submit', async (event) => {
     }
 });
 
+// --- 1. FUNCIÓN PARA OBTENER Y MOSTRAR LAS CUENTAS (CON AJUSTES) ---
+async function fetchAndDisplayAccounts() {
+    // ... (código de fetch y manejo de errores sin cambios) ...
+
+    accounts.forEach(account => {
+        const accountCard = document.createElement('div');
+        accountCard.className = 'account-card';
+        
+        accountCard.innerHTML = `
+            <h3>${account.service_name}</h3>
+            <p>${account.description}</p>
+            <p class="price"><b>Precio:</b> S/ ${account.price}</p>
+            
+            <button class="buy-btn" data-id="${account.id}">Comprar</button>
+        `;
+        
+        accountsListDiv.appendChild(accountCard);
+    });
+}
+
+
+// --- 2. CÓDIGO NUEVO PARA MANEJAR CLICS EN LOS BOTONES DE COMPRA ---
+accountsListDiv.addEventListener('click', async (event) => {
+    // Solo reacciona si se hizo clic en un elemento con la clase 'buy-btn'
+    if (event.target.classList.contains('buy-btn')) {
+        const accountId = event.target.dataset.id;
+        
+        // Muestra una confirmación simple
+        if (!confirm(`¿Estás seguro de que quieres comprar la cuenta con ID ${accountId}?`)) {
+            return; // Si el usuario cancela, no hace nada
+        }
+
+        try {
+            const response = await fetch(`${backendUrl}/api/accounts/${accountId}/sell`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (!response.ok) {
+                throw new Error('La compra falló');
+            }
+
+            alert('¡Cuenta comprada con éxito!');
+            fetchAndDisplayAccounts(); // Recarga la lista para que la cuenta comprada desaparezca
+
+        } catch (error) {
+            console.error('Error al comprar la cuenta:', error);
+            alert('Hubo un error durante la compra.');
+        }
+    }
+});
 
 // --- 3. LLAMADA INICIAL AL CARGAR LA PÁGINA ---
 // Llama a la función para mostrar las cuentas tan pronto como se carga la página.
