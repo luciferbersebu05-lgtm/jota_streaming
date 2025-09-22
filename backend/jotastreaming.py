@@ -49,19 +49,22 @@ def handle_accounts():
             if not data or not data.get('service_name') or not data.get('price'):
                 return jsonify({"error": "Faltan datos requeridos (service_name, price)"}), 400
 
+            # Usa el cliente de Supabase para insertar la nueva cuenta
             response = supabase.table('account').insert({
                 'service_name': data.get('service_name'),
                 'description': data.get('description'),
                 'price': data.get('price')
             }).execute()
 
+            # El cliente de Supabase devuelve una lista, así que tomamos el primer elemento
             return jsonify(response.data[0]), 201
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    # Si la petición es GET (o cualquier otra), se listan las cuentas
+    # Si la petición es GET, se listan las cuentas
     else: # (request.method == 'GET')
         try:
+            # Usa el cliente de Supabase para obtener las cuentas
             response = supabase.table('account').select("*").eq('is_sold', False).execute()
             return jsonify(response.data)
         except Exception as e:
