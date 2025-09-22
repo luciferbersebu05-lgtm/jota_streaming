@@ -52,7 +52,8 @@ def handle_accounts():
             response = supabase.table('account').insert({
                 'service_name': data.get('service_name'),
                 'description': data.get('description'),
-                'price': data.get('price')
+                'price': data.get('price'),
+                'is_sold': False  # <-- AÑADE ESTA LÍNEA
             }).execute()
             
             return jsonify(response.data[0]), 201
