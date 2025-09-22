@@ -17,12 +17,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    /* --- NUEVO: Fondo de pantalla --- */
-    background-image: linear-gradient(rgba(22, 22, 26, 0.9), rgba(22, 22, 26, 0.9)), url('static/img/fondo.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    /* ------------------------------ */
+    background-color: var(--background-color); /* <-- Le devolvemos el color sólido */
     color: var(--text-color);
 }
 
@@ -98,7 +93,14 @@ main {
 
 .hero {
     text-align: center;
-    padding: 6rem 0;
+    padding: 6rem 1rem; /* Ajustamos un poco el padding */
+    border-radius: 10px; /* Opcional: para redondear las esquinas */
+    margin-bottom: 4rem; /* Opcional: para separarlo del resto */
+    /* --- Aquí pegamos las líneas del fondo --- */
+    background-image: linear-gradient(rgba(22, 22, 26, 0.7), rgba(22, 22, 26, 0.7)), url('static/img/fondo.png');
+    background-size: cover;
+    background-position: center;
+    /* ------------------------------------- */
 }
 
 .hero h1 {
