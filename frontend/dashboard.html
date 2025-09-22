@@ -33,7 +33,8 @@
                 <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
                 <span>Jota Streaming</span>
             </a>
-            <ul id="nav-links" class="nav-links"></ul>
+            <ul id="nav-links" class="nav-links">
+                </ul>
         </nav>
     </header>
 
@@ -47,51 +48,35 @@
             <button class="slider-btn next-btn">›</button>
         </section>
 
+        <section class="horizontal-scroll-section">
+            <h2>Cuentas Destacadas</h2>
+            <div id="featured-accounts-list" class="horizontal-scroll-container">
+                </div>
+        </section>
+
         <div class="container">
-            <h2>Panel de Usuario</h2>
-            <p>Bienvenido, <b id="user-email-dashboard"></b></p>
-            <hr>
-    
             <div id="add-account-section">
                 <h2>Añadir Nueva Cuenta</h2>
                 <form id="add-account-form">
                     <label for="service_name">Servicio:</label>
-                    <input type="text" id="service_name" name="service_name" placeholder="Ej: Netflix" required>
+                    <input type="text" id="service_name" required>
                     <label for="description">Descripción:</label>
-                    <input type="text" id="description" name="description" placeholder="Ej: Plan Premium 1 Mes">
+                    <input type="text" id="description" required>
                     <label for="price">Precio (S/):</label>
-                    <input type="number" id="price" name="price" step="0.01" placeholder="Ej: 25.50" required>
+                    <input type="number" id="price" step="0.01" required>
                     <button type="submit">Añadir Cuenta</button>
                 </form>
             </div>
-            <hr>
-    
-            <div id="admin-panel" style="display: none;">
-                 <h2>Panel de Administrador: Crear Usuario</h2>
-                <form id="create-user-form">
-                    <label for="user_email">Email del Usuario:</label>
-                    <input type="email" id="user_email" required>
-                    <label for="user_password">Contraseña:</label>
-                    <input type="password" id="user_password" required>
-                    <button type="submit">Crear Usuario</button>
-                </form>
-            </div>
-            <hr>
-            
-            <section class="accounts-section">
-                <h2>Mis Cuentas Disponibles</h2>
-                <div id="accounts-list" class="main-grid-container">
-                    <p>Cargando cuentas...</p>
-                </div>
-            </section>
         </div>
-    </main>
-    
-    <footer>
-        <p>© 2025 Jota Streaming. Todos los derechos reservados.</p>
-    </footer>
 
-    <script type="module" src="static/js/main.js"></script> 
+        <section class="main-grid-section">
+            <h2>Catálogo General</h2>
+            <div id="accounts-list" class="main-grid-container">
+                </div>
+        </section>
+    </main>
+
     <script type="module" src="static/js/dashboard.js"></script>
+    <script type="module" src="static/js/main.js"></script> 
 </body>
 </html>
