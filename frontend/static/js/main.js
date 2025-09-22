@@ -1,26 +1,24 @@
 // frontend/static/js/main.js
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// --- CONFIGURACIÓN ---
 const SUPABASE_URL = 'https://sprraxgaqivlayzrhqqz.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwcnJheGdhcWl2bGF5enJocXF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0NzEyNzksImV4cCI6MjA3NDA0NzI3OX0.Gsi_h090KK_GPKOCDg_4S6nx6QyDHbEF7teg9IJhNlw';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const backendUrl = "https://jota-streaming-backend.onrender.com";
 
-// --- INICIALIZACIÓN DE CLIENTES ---
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// --- SELECCIÓN DE TODOS LOS ELEMENTOS DEL DOM (AQUÍ ARRIBA) ---
+// --- SELECCIÓN DE ELEMENTOS DEL DOM ---
 const loginModal = document.getElementById('login-modal');
 const registerModal = document.getElementById('register-modal');
 const loginBtnNav = document.getElementById('login-btn-nav');
 const registerBtnNav = document.getElementById('register-btn-nav');
 const closeButtons = document.querySelectorAll('.close-btn');
-const loginForm = document.getElementById('login-form');
+
+// CORRECCIÓN: El ID en tu HTML es "login-form", no "login_form".
+const loginForm = document.getElementById('login-form'); 
 const registerForm = document.getElementById('register-form');
 const logoClickableArea = document.getElementById('logo-clickable-area');
 const serviceCards = document.querySelectorAll('.service-card');
 const ctaButton = document.querySelector('.cta-button');
-const accountsListDiv = document.getElementById('accounts-list'); // Movido aquí arriba
 
 // --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
 const openLoginModal = () => loginModal.style.display = 'flex';
@@ -43,6 +41,13 @@ window.addEventListener('click', (event) => {
     }
 });
 
+// NUEVO: Cerrar modales con la tecla 'Escape'
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
+
 // --- LÓGICA DE REGISTRO CON NOMBRE DE USUARIO ---
 registerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -51,10 +56,10 @@ registerForm.addEventListener('submit', async (event) => {
     const password = document.getElementById('register_password').value;
 
     const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
+        email,
+        password,
         options: {
-            data: { username: username }
+            data: { username }
         }
     });
 
@@ -67,129 +72,41 @@ registerForm.addEventListener('submit', async (event) => {
     }
 });
 
-// --- LÓGICA DE LA APLICACIÓN ---
-
-// 1. FUNCIÓN PARA OBTENER Y MOSTRAR LAS CUENTAS
-async function fetchAndDisplayAccounts() {
-    // ... (esta función se mantiene igual que la tenías)
-    accountsListDiv.innerHTML = "<p>Cargando cuentas...</p>";
-    try {
-        const response = await fetch(backendUrl + "/api/accounts");
-        const accounts = await response.json();
-        accountsListDiv.innerHTML = "";
-        if (accounts.length === 0) {
-            accountsListDiv.innerHTML = "<p>No hay cuentas disponibles.</p>";
-            return;
-        }
-        accounts.forEach(account => {
-            const accountCard = document.createElement('div');
-            accountCard.className = 'account-card';
-            accountCard.innerHTML = `
-                <h3>${account.service_name}</h3>
-                <p>${account.description}</p>
-                <p class="price"><b>Precio:</b> S/ ${account.price}</p>
-                <button class="buy-btn" data-id="${account.id}">Comprar</button>
-            `;
-            accountsListDiv.appendChild(accountCard);
-        });
-    } catch (error) {
-        console.error("Error al obtener las cuentas:", error);
-        accountsListDiv.innerHTML = "<p>Hubo un error al cargar las cuentas.</p>";
-    }
-}
-
-// 2. MANEJAR CLICS EN BOTONES DE COMPRA
-accountsListDiv.addEventListener('click', async (event) => {
-    // ... (esta función se mantiene igual que la tenías)
-    if (event.target.classList.contains('buy-btn')) {
-        const accountId = event.target.dataset.id;
-        if (!confirm(`¿Estás seguro de comprar la cuenta ID ${accountId}?`)) return;
-        try {
-            const response = await fetch(`${backendUrl}/api/accounts/${accountId}/sell`, { method: 'PATCH' });
-            if (!response.ok) throw new Error('La compra falló');
-            alert('¡Cuenta comprada con éxito!');
-            fetchAndDisplayAccounts();
-        } catch (error) {
-            console.error('Error al comprar la cuenta:', error);
-            alert('Hubo un error durante la compra.');
-        }
-    }
-});
-
-// 3. MANEJAR FORMULARIO DE AÑADIR CUENTA (AHORA PROTEGIDO)
-addAccountForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-            alert("Debes iniciar sesión para añadir una cuenta.");
-            return;
-        }
-
-        const newAccountData = {
-            service_name: document.getElementById('service_name').value,
-            description: document.getElementById('description').value,
-            price: parseFloat(document.getElementById('price').value)
-        };
-
-        const response = await fetch(backendUrl + "/api/accounts", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify(newAccountData),
-        });
-
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-
-        alert('¡Cuenta añadida con éxito!');
-        addAccountForm.reset();
-        fetchAndDisplayAccounts();
-
-    } catch (error) {
-        console.error('Error al añadir la cuenta:', error);
-        alert('Hubo un error al añadir la cuenta.');
-    }
-});
-
-// 4. MANEJAR FORMULARIO DE CREAR USUARIO (ADMIN)
-createUserForm.addEventListener('submit', async (event) => {
-    // ... (esta función se mantiene igual que la tenías)
-    event.preventDefault();
-    const email = document.getElementById('user_email').value;
-    const password = document.getElementById('user_password').value;
-    try {
-        const response = await fetch(backendUrl + "/api/admin/create-user", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, password: password }),
-        });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Error al crear el usuario');
-        alert(`¡Usuario ${result.user.email} creado con éxito!`);
-        createUserForm.reset();
-    } catch (error) {
-        console.error('Error en el formulario de creación de usuario:', error);
-        alert(error.message);
-    }
-});
-
-// 5. LÓGICA DE AUTENTICACIÓN
+// --- LÓGICA DE INICIO DE SESIÓN (MODIFICADA) ---
 loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const email = document.getElementById('login_email').value;
+    // No sabemos si es email o username, lo llamamos 'identifier'
+    const identifier = document.getElementById('login_email').value; 
     const password = document.getElementById('login_password').value;
+    
+    let email = identifier; // Por defecto, asumimos que es un email
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    // Si no es un email, le pedimos al backend que lo busque
+    if (!identifier.includes('@')) {
+        try {
+            const response = await fetch(`${backendUrl}/api/get-email-by-username/${identifier}`);
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Usuario no encontrado');
+            }
+            email = data.email; // Encontramos el email asociado al username
+        } catch (error) {
+            alert('Error: ' + error.message);
+            return;
+        }
+    }
+
+    // Ahora intentamos iniciar sesión con el email
+    const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+    });
 
     if (error) {
         alert('Error al iniciar sesión: ' + error.message);
     } else {
+        closeModal();
         alert('¡Inicio de sesión exitoso!');
-        loginForm.reset();
     }
 });
 

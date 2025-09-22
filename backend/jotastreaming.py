@@ -54,6 +54,31 @@ def auth_required(f):
     return decorated_function
 
 # --- ENDPOINTS DE LA API ---
+
+# NUEVO: Endpoint para obtener email a partir de un nombre de usuario
+@app.route("/api/get-email-by-username/<string:username>", methods=['GET'])
+def get_email_by_username(username):
+    try:
+        # Usamos el cliente de Supabase para consultar la tabla 'profiles'
+        # Nota: Asegúrate de haber ejecutado el SQL para crear la tabla 'profiles'
+        response = supabase.table('profiles').select('id').eq('username', username).execute()
+        
+        if not response.data:
+            return jsonify({"error": "El nombre de usuario no existe"}), 404
+
+        # Obtenemos el ID del usuario del perfil
+        user_id = response.data[0]['id']
+        
+        # Usamos el cliente de admin para obtener la información completa del usuario, incluyendo su email
+        user = supabase.auth.admin.get_user_by_id(user_id)
+        
+        # Devolvemos solo el email
+        return jsonify({"email": user.user.email})
+
+    except Exception as e:
+        print(f"Error buscando usuario: {e}", flush=True)
+        return jsonify({"error": "Ocurrió un error en el servidor"}), 500
+    
 @app.route("/")
 def home():
     return "¡El backend de Jota Streaming está funcionando!"
