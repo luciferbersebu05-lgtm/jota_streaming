@@ -16,6 +16,11 @@ const authSection = document.getElementById('auth-section');
 const userSection = document.getElementById('user-section');
 const userEmailSpan = document.getElementById('user-email');
 const logoutButton = document.getElementById('logout-button');
+// --- Elementos del DOM para las nuevas secciones ---
+const addAccountSection = document.getElementById('add-account-section');
+const adminPanel = document.getElementById('admin-panel');
+// El email de tu cuenta de administrador (puedes ponerlo en una variable para fácil acceso)
+const ADMIN_EMAIL = "luciferbersebu05@gmail.com";
 
 // --- LÓGICA DE LA APLICACIÓN ---
 
@@ -150,13 +155,30 @@ logoutButton.addEventListener('click', async () => {
 
 supabase.auth.onAuthStateChange((_event, session) => {
     if (session) {
+        // El usuario ha iniciado sesión
         authSection.style.display = 'none';
         userSection.style.display = 'block';
         userEmailSpan.textContent = session.user.email;
+
+        // Muestra la sección para añadir cuentas
+        addAccountSection.style.display = 'block';
+
+        // Muestra el panel de admin SÓLO si el email coincide
+        if (session.user.email === ADMIN_EMAIL) {
+            adminPanel.style.display = 'block';
+        } else {
+            adminPanel.style.display = 'none';
+        }
+
     } else {
+        // El usuario ha cerrado sesión o no está logueado
         authSection.style.display = 'block';
         userSection.style.display = 'none';
         userEmailSpan.textContent = '';
+
+        // Oculta las secciones protegidas
+        addAccountSection.style.display = 'none';
+        adminPanel.style.display = 'none';
     }
 });
 
