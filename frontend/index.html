@@ -1,14 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jota Streaming</title>
     </head>
 <body>
-    <h1>Bienvenido a Jota Streaming</h1>
-    <p>Conectando con el backend...</p>
-    <div id="backend-response"></div>
+    <h1>Jota Streaming</h1>
+
+    <hr>
+    <h2>Añadir Nueva Cuenta</h2>
+    <form id="add-account-form">
+        <label for="service_name">Servicio:</label><br>
+        <input type="text" id="service_name" name="service_name" placeholder="Ej: Netflix" required><br><br>
+        
+        <label for="description">Descripción:</label><br>
+        <input type="text" id="description" name="description" placeholder="Ej: Plan Premium 1 Mes"><br><br>
+        
+        <label for="price">Precio (S/):</label><br>
+        <input type="number" id="price" name="price" step="0.01" placeholder="Ej: 25.50" required><br><br>
+        
+        <button type="submit">Añadir Cuenta</button>
+    </form>
+    <hr>
+
+    <h2>Cuentas Disponibles:</h2>
+    <div id="accounts-list">
+        <p>Cargando cuentas...</p>
+    </div>
 
     <script src="static/js/main.js"></script>
 </body>
