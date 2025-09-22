@@ -14,10 +14,10 @@
 
     <header>
         <nav>
-            <a href="index.html" class="logo-container">
+            <div class="logo-container" id="logo-clickable-area">
                 <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
                 <span>Jota Streaming</span>
-            </a>
+            </div>
             <ul id="nav-links" class="nav-links"></ul>
         </nav>
     </header>
@@ -47,6 +47,45 @@
             </div>
         </section>
     </main>
+
+    <div id="dashboard-content" class="container" style="display: none;">
+        <h2>Panel de Usuario</h2>
+        <p>Bienvenido, <b id="user-email-dashboard"></b></p>
+        <hr>
+
+        <div id="add-account-section">
+            <h2>Añadir Nueva Cuenta</h2>
+            <form id="add-account-form">
+                <label for="service_name">Servicio:</label>
+                <input type="text" id="service_name" name="service_name" placeholder="Ej: Netflix" required>
+                <label for="description">Descripción:</label>
+                <input type="text" id="description" name="description" placeholder="Ej: Plan Premium 1 Mes">
+                <label for="price">Precio (S/):</label>
+                <input type="number" id="price" name="price" step="0.01" placeholder="Ej: 25.50" required>
+                <button type="submit">Añadir Cuenta</button>
+            </form>
+        </div>
+        <hr>
+
+        <div id="admin-panel" style="display: none;">
+             <h2>Panel de Administrador: Crear Usuario</h2>
+            <form id="create-user-form">
+                <label for="user_email">Email del Usuario:</label>
+                <input type="email" id="user_email" required>
+                <label for="user_password">Contraseña:</label>
+                <input type="password" id="user_password" required>
+                <button type="submit">Crear Usuario</button>
+            </form>
+        </div>
+        <hr>
+        
+        <section class="accounts-section">
+            <h2>Cuentas Disponibles</h2>
+            <div id="accounts-list">
+                <p>Cargando cuentas...</p>
+            </div>
+        </section>
+    </div>
     
     <footer>
         <p>© 2025 Jota Streaming. Todos los derechos reservados.</p>
