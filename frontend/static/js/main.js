@@ -140,6 +140,9 @@ loginForm.addEventListener('submit', async (event) => {
     } else {
         closeModal();
         showToast('¡Inicio de sesión exitoso!');
+
+        // 👇 LÍNEA AÑADIDA PARA REDIRIGIR AUTOMÁTICAMENTE 👇
+        window.location.href = 'dashboard.html';
     }
 });
 
