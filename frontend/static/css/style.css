@@ -674,78 +674,103 @@ footer {
 
 
 /* Responsive Design */
+
+/* --- Para Tablets y Móviles Grandes (hasta 768px) --- */
 @media (max-width: 768px) {
     nav {
         flex-direction: column;
-        padding: 0.5rem 1rem;
+        padding: 1rem;
+        gap: 1rem; /* Espacio entre el logo y los links */
     }
 
     .logo-container {
-        margin-bottom: 1rem;
+        margin-bottom: 0; /* Quitamos el margen inferior que no necesitamos */
     }
 
     .nav-links {
         flex-wrap: wrap;
         justify-content: center;
-        gap: 0.8rem;
+        gap: 0.5rem 1rem; /* Ajustamos el espacio entre botones */
     }
 
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links .nav-btn, .nav-links .nav-btn-primary {
-        width: 80%;
-        margin: 0 auto;
+    /* Hero Section optimizada */
+    .hero {
+        min-height: 80vh; /* Hacemos el Hero un poco más corto en vertical */
+        padding: 3rem 1.5rem; /* Reducimos el espaciado */
     }
 
     .hero h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem; /* Título grande pero adaptado */
+        line-height: 1.2;  /* Hacemos el texto del título más compacto */
     }
 
     .hero p {
+        font-size: 1.1rem; /* Hacemos el subtítulo un poco más pequeño */
+    }
+    
+    .cta-button {
+        padding: 0.8rem 1.8rem; /* Botón ligeramente más compacto */
         font-size: 1rem;
     }
 
+    /* Main content y Services */
+    main {
+        padding: 0 1.5rem; /* Ajustamos el padding general */
+    }
+    
     .services h2 {
         font-size: 2rem;
     }
 
+    /* Organizamos los servicios en 4 columnas para tablets */
     .service-cards-container {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
     }
 
-    main {
-        padding: 0 1rem;
+    .service-card {
+        padding: 1rem; /* Hacemos las tarjetas de servicio más pequeñas */
     }
 
+    .service-card img {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Modales */
     .modal-content {
-        padding: 1.5rem;
-    }
-
-    .modal-content h2 {
-        font-size: 1.5rem;
-    }
-
-    .dashboard-section form {
-        grid-template-columns: 1fr; /* Stack elements on small screens */
+        padding: 2rem 1.5rem;
     }
 }
 
+
+/* --- Para Móviles Pequeños (hasta 480px) --- */
 @media (max-width: 480px) {
-    .nav-links .nav-btn, .nav-links .nav-btn-primary {
-        width: 95%;
+    .hero {
+        min-height: 75vh; /* Hacemos el Hero aún más corto */
+    }
+    
+    .hero h1 {
+        font-size: 2.1rem; /* Reducimos un poco más el título */
+    }
+    
+    .nav-links {
+        width: 100%;
+        justify-content: space-around;
+    }
+    
+    /* Pasamos a 3 columnas para que los íconos no sean muy pequeños */
+    .service-cards-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem;
+    }
+    
+    .service-card {
+        padding: 0.8rem;
     }
 
-    .hero-slider-container {
-        height: 250px; /* Smaller height for small devices */
-    }
-
-    .slider-btn {
-        padding: 10px;
-        font-size: 1.5rem;
-        width: 40px;
-        height: 40px;
+    .service-card img {
+        width: 45px;
+        height: 45px;
     }
 }
