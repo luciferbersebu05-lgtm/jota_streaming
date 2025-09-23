@@ -136,15 +136,16 @@ main {
 /* Capa de video (detrás de todo) */
 .hero-background-video {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Truco para centrar el video perfectamente */
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
+    top: 0;
+    left: 0;
+    width: 100%;   /* Hacemos que ocupe todo el contenedor */
+    height: 100%;  /* Hacemos que ocupe todo el contenedor */
+    
+    /* La propiedad clave que soluciona el problema */
+    object-fit: contain; 
+    
     z-index: 1; /* Capa del fondo */
-    filter: brightness(0.6); /* Le bajamos el brillo para que no opaque el texto */
+    filter: brightness(0.6); /* Mantenemos el brillo bajo para la legibilidad */
 }
 
 /* Contenido del Hero (textos, botones) - se asegura que esté por encima del video */
