@@ -1,5 +1,5 @@
 // Importamos el cliente único desde nuestro nuevo archivo central.
-import { supabase } from './js/supabaseClient.js';
+import { supabase } from './supabaseClient.js';
 
 // --- CONFIGURACIÓN ---
 // Las variables de Supabase ya no son necesarias aquí.
