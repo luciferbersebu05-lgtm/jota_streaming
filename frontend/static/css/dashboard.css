@@ -80,112 +80,61 @@ a.logo-container {
 .prev-btn { left: 10px; }
 .next-btn { right: 10px; }
 
-/* --- ESTILOS DEL SCROLL HORIZONTAL --- */
+/* PEGA TODO ESTE BLOQUE A CONTINUACIÓN */
+
+/* --- ESTILOS PARA EL CARRUSEL DE SERVICIOS --- */
+
 .horizontal-scroll-section {
-    padding: 2rem 5%;
+    padding: 1rem 5%; /* Espaciado alrededor de la sección */
+    max-width: 1200px;
+    margin: 2rem auto; /* Centra la sección y le da espacio vertical */
 }
+
 .horizontal-scroll-section h2 {
-    text-align: left;
+    font-size: 1.8rem;
+    color: #f0f0f0;
     margin-bottom: 1.5rem;
+    text-align: left;
 }
 
 .horizontal-scroll-container {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto; /* Permite el scroll horizontal */
-    padding-bottom: 20px; /* Espacio para la barra de scroll */
-    /* Ocultar la barra de scroll (opcional) */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    display: flex;         /* Pone las tarjetas en fila */
+    overflow-x: auto;      /* ¡La magia del scroll horizontal! */
+    gap: 20px;             /* Espacio entre las tarjetas */
+    padding: 10px;         /* Pequeño padding para que el brillo no se corte */
+    
+    /* Efecto para ocultar la barra de scroll y que se vea más limpio */
+    scrollbar-width: none; /* Para Firefox */
+    -ms-overflow-style: none; /* Para Internet Explorer y Edge */
 }
+
 .horizontal-scroll-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, and Opera */
+    display: none; /* Para Chrome, Safari y Opera */
 }
 
-.product-card-horizontal {
-    flex: 0 0 200px; /* No crece, no se encoge, base de 200px */
-    background-color: var(--card-background);
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-align: center;
-}
-.product-card-horizontal img {
-    max-width: 80px;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-}
-.product-card-horizontal h4 {
-    color: var(--headline-color);
-}
-.product-card-horizontal span {
-    color: var(--secondary-color);
-    font-weight: bold;
+.service-card-horizontal {
+    flex: 0 0 140px; /* Base de 140px de ancho, no se encoge ni se estira */
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2a2a2a;
+    border-radius: 20px;
+    padding: 1rem;
+    border: 2px solid transparent; /* Borde transparente para una transición suave */
+    transition: all 0.3s ease; /* Transición para el efecto hover */
 }
 
-/* --- ESTILOS DEL GRID PRINCIPAL CON EFECTO DE LUZ --- */
-.main-grid-section {
-    padding: 2rem 5%;
+/* --- EL EFECTO DE NEÓN AL PASAR EL MOUSE --- */
+.service-card-horizontal:hover {
+    transform: translateY(-5px) scale(1.05); /* La tarjeta se levanta y crece un poco */
+    border-color: rgba(100, 255, 218, 0.5); /* Borde con el color de acento */
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.4), /* Sombra interior */
+                0 0 30px rgba(100, 255, 218, 0.3); /* Sombra exterior para el brillo */
 }
 
-.main-grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
+.service-card-horizontal img {
+    max-width: 80%;
+    height: auto;
+    object-fit: contain;
 }
-
-.product-card-grid {
-    background-color: var(--card-background);
-    border-radius: 12px;
-    padding: 1.5rem;
-    position: relative;
-    overflow: hidden; /* Importante para el efecto */
-    border: 1px solid transparent;
-    transition: border 0.3s ease;
-}
-
-/* El efecto de luz */
-.product-card-grid::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: conic-gradient(
-        from 180deg at 50% 50%,
-        #7f5af0, #2cb67d, #e74c3c, #7f5af0
-    );
-    filter: blur(20px);
-    transform: scale(1.5);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 0;
-}
-
-.product-card-grid:hover::before {
-    opacity: 1;
-}
-
-/* Contenido de la tarjeta por encima del efecto */
-.product-card-grid > * {
-    position: relative;
-    z-index: 1;
-}
-
-.stock-indicator {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.product-card-grid img { max-width: 100px; margin-bottom: 1rem; }
-.product-card-grid h3 { color: var(--headline-color); }
-.product-card-grid p { margin: 0.5rem 0 1rem; }
-.product-card-grid .price { font-size: 1.5rem; color: var(--secondary-color); font-weight: bold; }
-.product-card-grid .buy-button { width: 100%; margin-top: 1rem; }
