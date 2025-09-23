@@ -25,7 +25,7 @@
     text-decoration: underline;
 }
 
-/* === ESTILOS EXISTENTES (CON PEQUEÑOS AJUSTES) === */
+/* === ESTILOS EXISTENTES === */
 .wallet-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -139,21 +139,22 @@
     border-collapse: collapse;
 }
 
-.movements-table th, .movements-table td {
+.movements-table th {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #444;
-}
-
-.movements-table th {
     color: #b0b0b0;
     font-weight: 600;
 }
 
-.movements-table td.income { color: #2ecc71; font-weight: 600; }
-.movements-table td.expense { color: #e74c3c; font-weight: 600; }
+/* === NUEVO ESTILO === */
+.no-movements-placeholder {
+    text-align: center;
+    padding: 2rem;
+    color: #b0b0b0;
+}
 
-/* === NUEVOS ESTILOS PARA LA SECCIÓN DE PAGO === */
+/* === ESTILOS PARA LA SECCIÓN DE PAGO === */
 .payment-methods-section {
     margin-top: 4rem;
     padding-top: 2rem;
