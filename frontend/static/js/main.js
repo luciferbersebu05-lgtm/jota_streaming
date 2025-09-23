@@ -41,24 +41,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // --- MANEJO DE SESIÓN Y REDIRECCIÓN ---
-    supabase.auth.onAuthStateChange((_event, session) => {
-        // ### LÓGICA DE REDIRECCIÓN ###
-        // Si hay sesión y estamos en index.html o la raíz, redirige al dashboard.
-        if (session && (window.location.pathname.endsWith('index.html') || window.location.pathname === '/')) {
-            window.location.replace('dashboard.html');
-            return;
-        }
+// --- MANEJO DE SESIÓN Y REDIRECCIÓN (VERSIÓN MEJORADA) ---
 
-        // Si NO hay sesión y estamos en dashboard.html, redirige al inicio.
-        if (!session && window.location.pathname.endsWith('dashboard.html')) {
-            window.location.replace('index.html');
-            return;
-        }
-        
-        // Actualizar la barra de navegación en cualquier página
-        updateNav(session);
-    });
+// Esta función se ejecuta tan pronto como el DOM está listo.
+async function handleInitialAuth() {
+    const currentPage = window.location.pathname;
+    
+    // 1. Obtenemos la sesión inicial al cargar la página.
+    const { data: { session } } = await supabase.auth.getSession();
+
+    // 2. Lógica de redirección inicial (solo se ejecuta una vez al cargar).
+    if (session && (currentPage.endsWith('index.html') || currentPage === '/')) {
+        // Si hay sesión y está en index, va al dashboard.
+        window.location.replace('dashboard.html');
+        return; // Detenemos la ejecución para que la redirección ocurra.
+    }
+    
+    if (!session && currentPage.endsWith('dashboard.html')) {
+        // Si NO hay sesión y está en dashboard, va al index.
+        window.location.replace('index.html');
+        return; // Detenemos la ejecución.
+    }
+
+    // 3. Si no hubo redirección, actualizamos la barra de navegación con la sesión actual.
+    updateNav(session);
+}
+
+// Ejecutamos la función de verificación inicial.
+handleInitialAuth();
+
+// 4. Ahora, onAuthStateChange solo escucha CAMBIOS (login/logout) y no la carga inicial.
+supabase.auth.onAuthStateChange((_event, session) => {
+    // Si el estado cambia, simplemente actualizamos la navegación.
+    // La redirección por login/logout se maneja en sus respectivas funciones.
+    updateNav(session);
+
+    // Añadimos una comprobación extra por si la sesión expira.
+    if (!session && window.location.pathname.endsWith('dashboard.html')) {
+        window.location.replace('index.html');
+    }
+});
 
     function updateNav(session) {
         if (!navLinks) return;
