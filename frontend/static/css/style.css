@@ -1,176 +1,212 @@
-/* frontend/static/css/style.css */
-
-:root {
-    --primary-color: #7f5af0;
-    --secondary-color: #2cb67d;
-    --background-color: #16161a;
-    --text-color: #94a1b2;
-    --headline-color: #fffffe;
-    --card-background: #242629;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* General Body and Font Styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color); /* <-- Le devolvemos el color sólido */
-    color: var(--text-color);
+    margin: 0;
+    background-color: #1a1a1a; /* Dark background for the entire page */
+    color: #f0f0f0; /* Light text color for readability */
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-/* --- BARRA DE NAVEGACIÓN --- */
+/* Header Styles */
 header {
-    background-color: rgba(22, 22, 26, 0.8);
-    backdrop-filter: blur(10px);
-    padding: 1rem 5%;
+    background-color: #222; /* Slightly lighter dark for header */
+    padding: 1rem 0;
+    border-bottom: 1px solid #333; /* Subtle separation */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
-    z-index: 100;
-    border-bottom: 1px solid var(--card-background);
+    z-index: 1000;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
+/* Logo Styles */
 .logo-container {
     display: flex;
     align-items: center;
-    font-size: 1.5rem;
+    text-decoration: none; /* Remove underline from the logo link */
+    color: #f0f0f0;
     font-weight: 700;
-    color: var(--headline-color);
-    /* --- NUEVO: Cursor de mano --- */
-    cursor: pointer;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.logo-container:hover {
+    color: #ffffff;
 }
 
 .logo-img {
+    width: 40px;
     height: 40px;
     margin-right: 10px;
+    border-radius: 8px; /* Rounded corners for the logo */
+    vertical-align: middle;
 }
 
+/* Navigation Links */
 .nav-links {
     list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    align-items: center;
     gap: 1.5rem;
+    align-items: center;
 }
 
 .nav-links a {
-    color: var(--headline-color);
+    color: #f0f0f0;
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
+.nav-links a:hover {
+    color: #64ffda; /* Accent color on hover */
+}
+
+/* Buttons in Navigation */
 .nav-btn, .nav-btn-primary {
+    padding: 0.6rem 1.2rem;
     border: none;
-    padding: 0.5rem 1rem;
     border-radius: 5px;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .nav-btn {
     background-color: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+    color: #64ffda; /* Accent color for outline button */
+    border: 2px solid #64ffda;
+}
+
+.nav-btn:hover {
+    background-color: rgba(100, 255, 218, 0.1); /* Light background on hover */
+    color: #ffffff;
 }
 
 .nav-btn-primary {
-    background-color: var(--primary-color);
-    color: var(--headline-color);
+    background-color: #64ffda; /* Solid accent color for primary button */
+    color: #1a1a1a;
 }
 
-/* --- SECCIONES PRINCIPALES --- */
+.nav-btn-primary:hover {
+    background-color: #3dccad; /* Slightly darker accent on hover */
+    color: #ffffff;
+}
+
+/* Main Content Styles (Index Page Specific) */
 main {
-    padding: 2rem 5%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    color: #e0e0e0;
 }
 
+/* Hero Section */
 .hero {
     text-align: center;
-    padding: 2rem;
-    /* --- CAMBIOS AQUÍ --- */
-    min-height: 100vh; /* Altura mínima del 100% de la ventana */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* --- FIN DE CAMBIOS --- */
-    background-image: linear-gradient(rgba(22, 22, 26, 0.7), rgba(22, 22, 26, 0.7)), url('../img/fondo.png');
-    background-size: cover;
-    background-position: center;
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+    border-radius: 10px;
+    margin-bottom: 3rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .hero h1 {
-    font-size: 3.5rem;
-    color: var(--headline-color);
+    font-size: 3rem;
     margin-bottom: 1rem;
+    color: #64ffda;
+    font-weight: 700;
 }
 
 .hero p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
+    color: #b0b0b0;
 }
 
 .cta-button {
-    background-color: var(--primary-color);
-    color: var(--headline-color);
+    background-color: #64ffda;
+    color: #1a1a1a;
     padding: 1rem 2rem;
-    border-radius: 5px;
-    border: none;
     font-size: 1.1rem;
-    font-weight: 600;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
 }
 
+.cta-button:hover {
+    background-color: #3dccad;
+    transform: translateY(-2px);
+}
+
+/* Services Section */
 .services {
     text-align: center;
-    padding: 4rem 0;
+    padding: 3rem 0;
 }
 
 .services h2 {
     font-size: 2.5rem;
-    color: var(--headline-color);
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
+    color: #f0f0f0;
+    font-weight: 700;
 }
 
 .service-cards-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5rem;
+    justify-content: center;
 }
 
 .service-card {
-    background-color: var(--card-background);
-    padding: 2rem;
+    background-color: #2a2a2a;
+    padding: 1.5rem;
     border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* --- NUEVO: Transición suave y cursor de mano --- */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     cursor: pointer;
 }
 
-/* --- NUEVO: Efecto de levantar la tarjeta --- */
 .service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    background-color: #333;
 }
 
 .service-card img {
-    max-width: 100px;
-    height: auto;
-    border-radius: 8px; /* <-- LÍNEA AÑADIDA */
-    /* Se quitaron los filtros */
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 5px; /* Slight rounding for service card images */
 }
 
-/* --- VENTANAS EMERGENTES (MODALES) --- */
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: #222;
+    color: #b0b0b0;
+    border-top: 1px solid #333;
+    margin-top: 3rem;
+}
+
+/* Modal Overlay (Login/Register) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -181,94 +217,129 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 200;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay[style*="display: flex"] {
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal-content {
-    background-color: var(--card-background);
-    padding: 2rem;
-    border-radius: 10px;
+    background-color: #2a2a2a;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     width: 90%;
-    max-width: 400px;
+    max-width: 450px;
     position: relative;
+    color: #f0f0f0;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-overlay[style*="display: flex"] .modal-content {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .close-btn {
     position: absolute;
-    top: 10px;
+    top: 15px;
     right: 20px;
     font-size: 2rem;
-    color: var(--text-color);
+    font-weight: 300;
+    color: #999;
     cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #f0f0f0;
 }
 
 .modal-content h2 {
-    color: var(--headline-color);
-    margin-bottom: 1.5rem;
     text-align: center;
+    margin-bottom: 2rem;
+    color: #64ffda;
+    font-size: 2rem;
+    font-weight: 700;
 }
 
-.modal-content label {
+.modal-content form label {
     display: block;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    border: none;
-    background-color: var(--background-color);
-    color: var(--headline-color);
-}
-
-.modal-content button {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: var(--primary-color);
-    color: var(--headline-color);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-bottom: 0.6rem;
     font-weight: 600;
+    color: #b0b0b0;
 }
 
-/* --- FOOTER --- */
-footer {
-    text-align: center;
-    padding: 2rem 5%;
-    margin-top: 4rem;
-    border-top: 1px solid var(--card-background);
+.modal-content form input[type="text"],
+.modal-content form input[type="email"],
+.modal-content form input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 0.8rem 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* frontend/static/css/style.css */
+.modal-content form input[type="text"]:focus,
+.modal-content form input[type="email"]:focus,
+.modal-content form input[type="password"]:focus {
+    border-color: #64ffda;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
+}
 
-/* ... (Todos tus estilos existentes se mantienen igual) ... */
+.modal-content form button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #64ffda;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
+.modal-content form button:hover {
+    background-color: #3dccad;
+    transform: translateY(-2px);
+    color: #ffffff;
+}
 
-/* --- NUEVO: Estilos para Notificaciones Toast --- */
+/* Toast Notifications */
 #toast-container {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 1001; /* Por encima de todo */
+    z-index: 3000;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     gap: 10px;
 }
 
 .toast {
-    color: var(--headline-color);
+    background-color: #333;
+    color: #f0f0f0;
     padding: 15px 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transform: translateX(100%);
-    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    min-width: 250px;
+    border-left: 5px solid;
 }
 
 .toast.show {
@@ -276,14 +347,370 @@ footer {
     transform: translateX(0);
 }
 
-/* Estilo para notificaciones de éxito */
 .toast.success {
-    background-color: var(--secondary-color); /* Verde */
+    border-color: #64ffda;
+    background-color: #283a3a;
 }
 
-/* Estilo para notificaciones de error */
 .toast.error {
-    background-color: #e74c3c; /* Rojo */
+    border-color: #e74c3c;
+    background-color: #3a2828;
 }
 
-/* (Puedes borrar todos los estilos de .custom-alert-container si quieres) */
+/* --- DASHBOARD SPECIFIC STYLES --- */
+
+/* Main content for dashboard to push footer down */
+.dashboard-main {
+    min-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+    padding-bottom: 2rem; /* Give some space above footer */
+}
+
+/* Hero Slider Container */
+.hero-slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%; /* Ensure it spans full width */
+    height: 400px; /* Adjust height as needed */
+    margin: 0 auto 3rem auto; /* Center and add margin below */
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hero-slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0; /* Prevent slides from shrinking */
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 10;
+    border-radius: 50%; /* Make buttons round */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.slider-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+
+/* Admin Panel Styles */
+.admin-panel {
+    background-color: #2a2a2a;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.admin-panel h3 {
+    color: #64ffda;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
+.admin-panel form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.admin-panel form label {
+    font-weight: 600;
+    color: #b0b0b0;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.admin-panel form input[type="email"],
+.admin-panel form input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 0.8rem 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    font-size: 1rem;
+}
+
+.admin-panel form button {
+    background-color: #64ffda;
+    color: #1a1a1a;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.admin-panel form button:hover {
+    background-color: #3dccad;
+    color: #ffffff;
+}
+
+/* User Dashboard Sections (Account Management, etc.) */
+.dashboard-section {
+    background-color: #2a2a2a;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-section h2 {
+    color: #f0f0f0;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
+.dashboard-section p {
+    color: #b0b0b0;
+    margin-bottom: 1rem;
+}
+
+/* Form Styles within Dashboard Sections */
+.dashboard-section form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    align-items: flex-end;
+    margin-top: 1.5rem;
+}
+
+.dashboard-section form label {
+    font-weight: 600;
+    color: #b0b0b0;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-section form input,
+.dashboard-section form select {
+    width: calc(100% - 20px);
+    padding: 0.8rem 10px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    font-size: 1rem;
+    appearance: none; /* Remove default select arrow */
+}
+
+.dashboard-section form input:focus,
+.dashboard-section form select:focus {
+    border-color: #64ffda;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
+}
+
+.dashboard-section form button {
+    background-color: #64ffda;
+    color: #1a1a1a;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    align-self: flex-end; /* Align button to the bottom */
+}
+
+.dashboard-section form button:hover {
+    background-color: #3dccad;
+    color: #ffffff;
+}
+
+/* Account List Display */
+#accounts-list {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card-grid {
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card-grid:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.product-card-grid img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    border-radius: 8px; /* Rounded corners for product images */
+}
+
+.product-card-grid h3 {
+    color: #64ffda;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-card-grid p {
+    color: #b0b0b0;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.product-card-grid .price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #f0f0f0;
+    margin-bottom: 1.5rem;
+}
+
+.stock-indicator {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #2ecc71; /* Green for available */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.buy-btn {
+    background-color: #64ffda;
+    color: #1a1a1a;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.buy-btn:hover {
+    background-color: #3dccad;
+    color: #ffffff;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        padding: 0.5rem 1rem;
+    }
+
+    .logo-container {
+        margin-bottom: 1rem;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links .nav-btn, .nav-links .nav-btn-primary {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .services h2 {
+        font-size: 2rem;
+    }
+
+    .service-cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+    main {
+        padding: 0 1rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-section form {
+        grid-template-columns: 1fr; /* Stack elements on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-links .nav-btn, .nav-links .nav-btn-primary {
+        width: 95%;
+    }
+
+    .hero-slider-container {
+        height: 250px; /* Smaller height for small devices */
+    }
+
+    .slider-btn {
+        padding: 10px;
+        font-size: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+}

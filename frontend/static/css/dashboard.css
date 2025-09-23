@@ -1,5 +1,10 @@
 /* frontend/static/css/dashboard.css */
 
+/* REGLA AÑADIDA PARA CORREGIR EL SUBRAYADO DEL LOGO */
+a.logo-container {
+    text-decoration: none;
+}
+
 .dashboard-main {
     padding: 0;
     width: 100%;
