@@ -3,90 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jota Streaming - Cuentas de Streaming</title>
+    <title>Dashboard - Jota Streaming</title>
     <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
     <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+        const SUPABASE_URL = 'https://sprraxgaqivlayzrhqqz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwcnJheGdhcWl2bGF5enJocXF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0NzEyNzksImV4cCI6MjA3NDA0NzI3OX0.Gsi_h090KK_GPKOCDg_4S6nx6QyDHbEF7teg9IJhNlw';
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        (async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                // Si no hay sesión, lo redirige a la página principal
+                window.location.replace("index.html");
+            }
+        })();
+    </script>
 
     <div id="toast-container"></div>
 
     <header>
         <nav>
-            <div class="logo-container" id="logo-clickable-area">
+            <a href="index.html" class="logo-container">
                 <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
                 <span>Jota Streaming</span>
-            </div>
+            </a>
             <ul id="nav-links" class="nav-links"></ul>
         </nav>
     </header>
 
-    <main id="main-content">
-    <section class="hero">
-        
-        <video autoplay loop muted playsinline class="hero-background-video">
-            <source src="static/vid/fondo-chihiro.mp4" type="video/mp4">
-        </video>
+    <main class="dashboard-main">
+        <section class="hero-slider-container">
+            <div class="hero-slider">
+                
+                <div class="slide">
+                    <div class="slide-background" style="background-image: url('static/img/pelicula1.png');"></div>
+                    <img class="slide-foreground" src="static/img/pelicula1.png" alt="Banner de Merlina">
+                </div>
 
-        <h1>El Mejor Lugar para tus Cuentas de Streaming</h1>
-        <p>Compra y vende de forma segura y rápida.</p>
-        <button class="cta-button">Empezar Ahora</button>
-    </section>
+                <div class="slide">
+                    <div class="slide-background" style="background-image: url('static/img/pelicula2.png');"></div>
+                    <img class="slide-foreground" src="static/img/pelicula2.png" alt="Banner de Chespirito">
+                </div>
+            </div>
+            <button class="slider-btn prev-btn">‹</button>
+            <button class="slider-btn next-btn">›</button>
+        </section>
 
-        <section id="services" class="services">
-            <h2>Servicios Populares</h2>
-            <div class="service-cards-container">
-                <div class="service-card"><img src="https://logo.clearbit.com/netflix.com" alt="Netflix"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/spotify.com" alt="Spotify"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/hbo.com" alt="HBO Max"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/disneyplus.com" alt="Disney+"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/vix.com" alt="Vix"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/openai.com" alt="ChatGPT"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/google.com" alt="Gemini/Google"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/primevideo.com" alt="Prime Video"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/paramountplus.com" alt="Paramount+"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/crunchyroll.com" alt="Crunchyroll"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/starplus.com" alt="Star+"></div>
-                <div class="service-card"><img src="https://logo.clearbit.com/youtube.com" alt="YouTube Premium"></div>
+        <section class="horizontal-scroll-section">
+            <h2>Nuestros Servicios</h2>
+            <div class="horizontal-scroll-container">
+                
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/logo.png" alt="Jota Streaming">
+                </a>
+                
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/netflix.png" alt="Netflix">
+                </a>
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/hbo.png" alt="HBO Max">
+                </a>
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/disney.png" alt="Disney+">
+                </a>
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/chatgpt.png" alt="ChatGPT">
+                </a>
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/crunchyroll.png" alt="Crunchyroll">
+                </a>
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/primevideo.png" alt="Prime Video">
+                </a>
+                <a href="#" class="service-card-horizontal">
+                    <img src="static/img/yt.png" alt="YouTube Premium">
+                </a>
             </div>
         </section>
-    </main>
-
+        </main>
+    
     <footer>
         <p>© 2025 Jota Streaming. Todos los derechos reservados.</p>
     </footer>
 
-    <div id="login-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <span class="close-btn">×</span>
-            <h2>Iniciar Sesión</h2>
-            <form id="login-form">
-                <label for="login_email">Email o Nombre de Usuario:</label>
-                <input type="text" id="login_email" required>
-                <label for="login_password">Contraseña:</label>
-                <input type="password" id="login_password" required>
-                <button type="submit">Entrar</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="register-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <span class="close-btn">×</span>
-            <h2>Crear una Cuenta</h2>
-            <form id="register-form">
-                <label for="register_username">Nombre de Usuario:</label>
-                <input type="text" id="register_username" required>
-                <label for="register_email">Email:</label>
-                <input type="email" id="register_email" required>
-                <label for="register_password">Contraseña:</label>
-                <input type="password" id="register_password" required>
-                <button type="submit">Registrarse</button>
-            </form>
-        </div>
-    </div>
-    
-    <script type="module" src="static/js/main.js"></script>
+    <script type="module" src="static/js/main.js"></script> 
+    <script type="module" src="static/js/dashboard.js"></script>
 </body>
 </html>
