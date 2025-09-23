@@ -28,18 +28,32 @@ a.logo-container {
     min-width: 100%;
     height: 100%;
     flex-shrink: 0;
-    /* Añadimos un fondo oscuro para los bordes */
-    background-color: #111;
-    /* Quitamos las propiedades de background-image de aquí */
+    position: relative; /* Necesario para que el filtro funcione bien */
+    overflow: hidden;   /* Oculta los bordes borrosos que se salen del cuadro */
+
+    /* --- ESTILOS PARA EL FONDO DIFUMINADO --- */
+    background-size: cover;      /* Cubre todo el espacio */
+    background-position: center; /* Centra la imagen de fondo */
+    
+    /* La magia del desenfoque y el brillo */
+    filter: blur(25px) brightness(0.7);
+
+    /* Hacemos que la imagen de fondo se escale un poco más para evitar
+       que se vean bordes transparentes por el desenfoque */
+    transform: scale(1.1);
 }
 
 .slide img {
     width: 100%;
     height: 100%;
-    /* Esta es la propiedad clave:
-       'contain' asegura que toda la imagen sea visible.
-       'cover' la recortaría como antes. */
+    
+    /* Mantiene la imagen principal completa y sin recortes */
     object-fit: contain;
+
+    /* Un pequeño truco para asegurar que la imagen principal no herede
+       el filtro de desenfoque de su padre */
+    position: relative;
+    z-index: 2;
 }
 
 .slider-btn {
