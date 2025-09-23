@@ -1,8 +1,9 @@
+// static/js/main.js
+
 // Importamos el cliente único desde nuestro nuevo archivo central.
 import { supabase } from './supabaseClient.js';
 
 // --- CONFIGURACIÓN ---
-// Las variables de Supabase ya no son necesarias aquí.
 const backendUrl = "https://jota-streaming-backend.onrender.com";
 const ADMIN_EMAIL = "luciferbersebu@gmail.com";
 
@@ -21,18 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
             let reloadCount = parseInt(sessionStorage.getItem('reloadCount') || '0', 10);
             const lastReload = parseInt(sessionStorage.getItem('lastReloadTime') || '0', 10);
 
-            // Si la última recarga fue hace más de 5 segundos, reiniciamos el contador.
             if (now - lastReload > TIME_LIMIT_MS) {
                 reloadCount = 0;
             }
 
             reloadCount++;
 
-            // Guardamos los nuevos valores.
             sessionStorage.setItem('reloadCount', reloadCount.toString());
             sessionStorage.setItem('lastReloadTime', now.toString());
 
-            // Si se supera el límite, activamos el cortocircuito.
             if (reloadCount > RELOAD_LIMIT) {
                 console.error("Bucle de recarga detectado. Cerrando sesión para proteger al usuario.");
                 
@@ -40,12 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 await supabase.auth.signOut();
                 window.location.replace('/index.html');
                 
-                return true; // Indicamos que se activó el cortocircuito.
+                return true;
             }
         } catch (error) {
             console.error("Error en el detector de bucles:", error);
         }
-        return false; // No se activó el cortocircuito.
+        return false;
     }
 
     
@@ -62,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toastContainer = document.getElementById('toast-container');
     const userEmailDashboard = document.getElementById('user-email-dashboard');
     const adminPanel = document.getElementById('admin-panel');
-    const mainContent = document.getElementById('main-content'); // Para la página principal
+    const mainContent = document.getElementById('main-content');
     
     // --- LÓGICA DE NOTIFICACIONES "TOAST" ---
     function showToast(message, type = 'success') {
@@ -78,9 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // --- MANEJO DE SESIÓN Y REDIRECCIÓN (VERSIÓN MEJORADA CON LOGS DE COMBATE) ---
+    // --- MANEJO DE SESIÓN Y REDIRECCIÓN ---
     async function handleInitialAuth() {
-        console.log("🚦 Ejecutando handleInitialAuth..."); // Log inicial
+        console.log("🚦 Ejecutando handleInitialAuth...");
 
         const loopDetected = await checkReloadLoop();
         if (loopDetected) {
@@ -93,14 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const { data: { session } } = await supabase.auth.getSession();
         
-        // Mostramos si encontramos una sesión o no.
         if (session) {
             console.log("✅ Sesión encontrada para:", session.user.email);
         } else {
             console.log("❌ No se encontró sesión (es null).");
         }
 
-        // Lógica de redirección con logs
         if (session && (currentPage.endsWith('index.html') || currentPage === '/')) {
             console.log("➡️ Decisión: Hay sesión y está en index. Redirigiendo a dashboard.html...");
             window.location.replace('dashboard.html');
@@ -126,12 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // FUNCIÓN PARA ACTUALIZAR LA BARRA DE NAVEGACIÓN
     function updateNav(session) {
         if (!navLinks) return;
         navLinks.innerHTML = '';
 
         if (session) {
-            // Navegación para usuario con sesión iniciada
             navLinks.innerHTML = `
                 <div class="nav-icon-menu">
                     <a href="#" class="nav-icon-item">
@@ -139,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>Mi billetera</span>
                     </a>
                     <a href="#" class="nav-icon-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                         <span>Mis compras</span>
                     </a>
                     <a href="#" class="nav-icon-item">
@@ -153,31 +149,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <li><button id="logout-btn-nav" class="nav-btn-primary">Cerrar Sesión</button></li>
             `;
-            document.getElementById('logout-btn-nav').addEventListener('click', async () => {
-                await supabase.auth.signOut();
-                showToast('Has cerrado sesión.');
-                window.location.replace('index.html'); // Aseguramos redirección al cerrar sesión
-            });
-
             if (userEmailDashboard) userEmailDashboard.textContent = session.user.email;
             if (adminPanel) {
                 adminPanel.style.display = (session.user.email === ADMIN_EMAIL) ? 'block' : 'none';
             }
 
         } else {
-            // Navegación para visitantes
             navLinks.innerHTML = `
                 <li><a href="index.html#services">Mercado</a></li>
                 <li><button id="login-btn-nav" class="nav-btn">Iniciar sesión</button></li>
                 <li><button id="register-btn-nav" class="nav-btn-primary">Registrarse</button></li>
             `;
-            if (document.getElementById('login-btn-nav')) {
-                document.getElementById('login-btn-nav').addEventListener('click', () => openModal(loginModal));
-            }
-            if (document.getElementById('register-btn-nav')) {
-                document.getElementById('register-btn-nav').addEventListener('click', () => openModal(registerModal));
-            }
         }
+    }
+
+    // CORRECCIÓN: USAMOS DELEGACIÓN DE EVENTOS PARA LOS BOTONES DE NAVEGACIÓN
+    if (navLinks) {
+        navLinks.addEventListener('click', async (event) => {
+            const target = event.target;
+            
+            if (target && target.id === 'logout-btn-nav') {
+                try {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
+                    showToast('Has cerrado sesión.');
+                    window.location.replace('index.html');
+                } catch (error) {
+                    showToast('Error al cerrar sesión: ' + error.message, 'error');
+                }
+            }
+
+            if (target && target.id === 'login-btn-nav') {
+                openModal(loginModal);
+            }
+
+            if (target && target.id === 'register-btn-nav') {
+                openModal(registerModal);
+            }
+        });
     }
 
     // --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
@@ -188,8 +197,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (mainContent) {
-        document.querySelector('.cta-button').addEventListener('click', () => openModal(registerModal));
-        document.querySelectorAll('.service-card').forEach(card => card.addEventListener('click', () => openModal(loginModal)));
+        const ctaButton = document.querySelector('.cta-button');
+        if (ctaButton) ctaButton.addEventListener('click', () => openModal(registerModal));
+
+        const serviceCards = document.querySelectorAll('.service-card');
+        if(serviceCards) serviceCards.forEach(card => card.addEventListener('click', () => openModal(loginModal)));
     }
     
     if (closeButtons) {
@@ -225,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 closeModal();
                 showToast('¡Inicio de sesión exitoso!');
-                window.location.replace('dashboard.html'); // Redirección explícita al loguearse
+                window.location.replace('dashboard.html');
             }
         });
     }
