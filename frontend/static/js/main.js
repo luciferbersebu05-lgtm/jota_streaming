@@ -65,15 +65,33 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.innerHTML = '';
 
         if (session) {
-            // Navegación para usuario con sesión iniciada (Botón "Mi Panel" eliminado)
-            navLinks.innerHTML = `
-                <li><button id="logout-btn-nav" class="nav-btn-primary">Cerrar Sesión</button></li>
-            `;
-            document.getElementById('logout-btn-nav').addEventListener('click', async () => {
-                await supabase.auth.signOut();
-                showToast('Has cerrado sesión.');
-                // onAuthStateChange se encargará de redirigir
-            });
+    // Navegación para usuario con sesión iniciada
+    navLinks.innerHTML = `
+        <div class="nav-icon-menu">
+            <a href="#" class="nav-icon-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                <span>Mi billetera</span>
+            </a>
+            <a href="#" class="nav-icon-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span>Mis compras</span>
+            </a>
+            <a href="#" class="nav-icon-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                <span>Día</span>
+            </a>
+            <a href="#" class="nav-icon-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                <span>Menu</span>
+            </a>
+        </div>
+        <li><button id="logout-btn-nav" class="nav-btn-primary">Cerrar Sesión</button></li>
+    `;
+    document.getElementById('logout-btn-nav').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        showToast('Has cerrado sesión.');
+        // onAuthStateChange se encargará de redirigir
+    });
 
             // Si estamos en el dashboard, muestra el email y el panel de admin si corresponde
             if (userEmailDashboard) userEmailDashboard.textContent = session.user.email;

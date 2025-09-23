@@ -672,6 +672,38 @@ footer {
     color: #ffffff;
 }
 
+/* --- Estilos para el Menú de Iconos en el Dashboard --- */
+.nav-icon-menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Espacio entre cada ícono */
+    margin-right: 1.5rem; /* Espacio entre los íconos y el botón "Cerrar Sesión" */
+}
+
+.nav-icon-item {
+    display: flex;
+    flex-direction: column; /* Pone el ícono arriba y el texto abajo */
+    align-items: center;
+    text-decoration: none;
+    color: #b0b0b0; /* Un gris claro para el estado normal */
+    transition: color 0.3s ease;
+}
+
+.nav-icon-item:hover {
+    color: #64ffda; /* Color de acento al pasar el mouse */
+}
+
+.nav-icon-item svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2; /* Grosor de la línea del ícono */
+}
+
+.nav-icon-item span {
+    font-size: 0.75rem; /* Tamaño de letra pequeño para el texto */
+    margin-top: 4px;
+    font-weight: 500;
+}
 
 /* Responsive Design */
 
