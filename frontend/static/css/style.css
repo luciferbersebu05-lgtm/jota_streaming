@@ -113,13 +113,33 @@ main {
 }
 
 /* Hero Section */
+/* frontend/static/css/style.css */
+
 .hero {
     text-align: center;
-    padding: 4rem 0;
-    background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-    border-radius: 10px;
-    margin-bottom: 3rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 4rem 2rem; /* Aumentamos un poco el padding para más espacio */
+    min-height: 90vh; /* Hacemos que ocupe casi toda la pantalla inicial */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Necesario para efectos futuros */
+    color: var(--headline-color); /* Usamos el color de títulos para el texto */
+    
+    /* --- LA MAGIA ESTÁ AQUÍ --- */
+
+    /* 1. Capa de color: Un degradado oscuro semitransparente */
+    background-image: 
+        linear-gradient(rgba(22, 22, 26, 0.75), rgba(22, 22, 26, 0.75)),
+    /* 2. Tu imagen de fondo, debajo de la capa de color */
+        url('../img/fondo-chihiro.gif');
+
+    /* Ajustes para que la imagen de fondo se vea perfecta */
+    background-size: cover;      /* Cubre todo el espacio sin deformarse */
+    background-position: center; /* Centra la imagen */
+
+    /* [TRUCO PRO] Esto crea un efecto parallax: el fondo se queda fijo al hacer scroll */
+    background-attachment: fixed; 
 }
 
 .hero h1 {
