@@ -11,6 +11,46 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // --- LÓGICA DE LA APLICACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ==================================================================
+    // === FUNCIÓN DETECTOR DE BUCLE DE RECARGA (CORTOCIRCUITO) ===
+    // ==================================================================
+    async function checkReloadLoop() {
+        const RELOAD_LIMIT = 15; // Límite de recargas.
+        const TIME_LIMIT_MS = 5000; // 5 segundos.
+
+        try {
+            const now = new Date().getTime();
+            let reloadCount = parseInt(sessionStorage.getItem('reloadCount') || '0', 10);
+            const lastReload = parseInt(sessionStorage.getItem('lastReloadTime') || '0', 10);
+
+            // Si la última recarga fue hace más de 5 segundos, reiniciamos el contador.
+            if (now - lastReload > TIME_LIMIT_MS) {
+                reloadCount = 0;
+            }
+
+            reloadCount++;
+
+            // Guardamos los nuevos valores.
+            sessionStorage.setItem('reloadCount', reloadCount.toString());
+            sessionStorage.setItem('lastReloadTime', now.toString());
+
+            // Si se supera el límite, activamos el cortocircuito.
+            if (reloadCount > RELOAD_LIMIT) {
+                console.error("Bucle de recarga detectado. Cerrando sesión para proteger al usuario.");
+                
+                sessionStorage.clear();
+                await supabase.auth.signOut();
+                window.location.replace('/index.html');
+                
+                return true; // Indicamos que se activó el cortocircuito.
+            }
+        } catch (error) {
+            console.error("Error en el detector de bucles:", error);
+        }
+        return false; // No se activó el cortocircuito.
+    }
+
     
     // --- SELECCIÓN DE ELEMENTOS DEL DOM ---
     const navLinks = document.getElementById('nav-links');
@@ -41,81 +81,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-// --- MANEJO DE SESIÓN Y REDIRECCIÓN (VERSIÓN MEJORADA) ---
+    // --- MANEJO DE SESIÓN Y REDIRECCIÓN (VERSIÓN MEJORADA CON CORTOCIRCUITO) ---
+    async function handleInitialAuth() {
+        // Primero, ejecutamos el detector de bucles.
+        const loopDetected = await checkReloadLoop();
+        if (loopDetected) return; // Si se detecta un bucle, no hacemos nada más.
 
-// Esta función se ejecuta tan pronto como el DOM está listo.
-async function handleInitialAuth() {
-    const currentPage = window.location.pathname;
-    
-    // 1. Obtenemos la sesión inicial al cargar la página.
-    const { data: { session } } = await supabase.auth.getSession();
+        const currentPage = window.location.pathname;
+        const { data: { session } } = await supabase.auth.getSession();
 
-    // 2. Lógica de redirección inicial (solo se ejecuta una vez al cargar).
-    if (session && (currentPage.endsWith('index.html') || currentPage === '/')) {
-        // Si hay sesión y está en index, va al dashboard.
-        window.location.replace('dashboard.html');
-        return; // Detenemos la ejecución para que la redirección ocurra.
+        if (session && (currentPage.endsWith('index.html') || currentPage === '/')) {
+            window.location.replace('dashboard.html');
+            return;
+        }
+        
+        if (!session && currentPage.endsWith('dashboard.html')) {
+            window.location.replace('index.html');
+            return;
+        }
+        updateNav(session);
     }
     
-    if (!session && currentPage.endsWith('dashboard.html')) {
-        // Si NO hay sesión y está en dashboard, va al index.
-        window.location.replace('index.html');
-        return; // Detenemos la ejecución.
-    }
+    handleInitialAuth();
 
-    // 3. Si no hubo redirección, actualizamos la barra de navegación con la sesión actual.
-    updateNav(session);
-}
-
-// Ejecutamos la función de verificación inicial.
-handleInitialAuth();
-
-// 4. Ahora, onAuthStateChange solo escucha CAMBIOS (login/logout) y no la carga inicial.
-supabase.auth.onAuthStateChange((_event, session) => {
-    // Si el estado cambia, simplemente actualizamos la navegación.
-    // La redirección por login/logout se maneja en sus respectivas funciones.
-    updateNav(session);
-
-    // Añadimos una comprobación extra por si la sesión expira.
-    if (!session && window.location.pathname.endsWith('dashboard.html')) {
-        window.location.replace('index.html');
-    }
-});
+    supabase.auth.onAuthStateChange((_event, session) => {
+        updateNav(session);
+        if (!session && window.location.pathname.endsWith('dashboard.html')) {
+            window.location.replace('index.html');
+        }
+    });
 
     function updateNav(session) {
         if (!navLinks) return;
         navLinks.innerHTML = '';
 
         if (session) {
-    // Navegación para usuario con sesión iniciada
-    navLinks.innerHTML = `
-        <div class="nav-icon-menu">
-            <a href="#" class="nav-icon-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-                <span>Mi billetera</span>
-            </a>
-            <a href="#" class="nav-icon-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                <span>Mis compras</span>
-            </a>
-            <a href="#" class="nav-icon-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-                <span>Día</span>
-            </a>
-            <a href="#" class="nav-icon-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                <span>Menu</span>
-            </a>
-        </div>
-        <li><button id="logout-btn-nav" class="nav-btn-primary">Cerrar Sesión</button></li>
-    `;
-    document.getElementById('logout-btn-nav').addEventListener('click', async () => {
-        await supabase.auth.signOut();
-        showToast('Has cerrado sesión.');
-        // onAuthStateChange se encargará de redirigir
-    });
+            // Navegación para usuario con sesión iniciada
+            navLinks.innerHTML = `
+                <div class="nav-icon-menu">
+                    <a href="#" class="nav-icon-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                        <span>Mi billetera</span>
+                    </a>
+                    <a href="#" class="nav-icon-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        <span>Mis compras</span>
+                    </a>
+                    <a href="#" class="nav-icon-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                        <span>Día</span>
+                    </a>
+                    <a href="#" class="nav-icon-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                        <span>Menu</span>
+                    </a>
+                </div>
+                <li><button id="logout-btn-nav" class="nav-btn-primary">Cerrar Sesión</button></li>
+            `;
+            document.getElementById('logout-btn-nav').addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                showToast('Has cerrado sesión.');
+                window.location.replace('index.html'); // Aseguramos redirección al cerrar sesión
+            });
 
-            // Si estamos en el dashboard, muestra el email y el panel de admin si corresponde
             if (userEmailDashboard) userEmailDashboard.textContent = session.user.email;
             if (adminPanel) {
                 adminPanel.style.display = (session.user.email === ADMIN_EMAIL) ? 'block' : 'none';
@@ -128,8 +156,12 @@ supabase.auth.onAuthStateChange((_event, session) => {
                 <li><button id="login-btn-nav" class="nav-btn">Iniciar sesión</button></li>
                 <li><button id="register-btn-nav" class="nav-btn-primary">Registrarse</button></li>
             `;
-            document.getElementById('login-btn-nav').addEventListener('click', () => openModal(loginModal));
-            document.getElementById('register-btn-nav').addEventListener('click', () => openModal(registerModal));
+            if (document.getElementById('login-btn-nav')) {
+                document.getElementById('login-btn-nav').addEventListener('click', () => openModal(loginModal));
+            }
+            if (document.getElementById('register-btn-nav')) {
+                document.getElementById('register-btn-nav').addEventListener('click', () => openModal(registerModal));
+            }
         }
     }
 
@@ -140,7 +172,7 @@ supabase.auth.onAuthStateChange((_event, session) => {
         if (registerModal) registerModal.style.display = 'none';
     };
 
-    if (mainContent) { // Solo asigna estos listeners si estamos en index.html
+    if (mainContent) {
         document.querySelector('.cta-button').addEventListener('click', () => openModal(registerModal));
         document.querySelectorAll('.service-card').forEach(card => card.addEventListener('click', () => openModal(loginModal)));
     }
@@ -178,7 +210,7 @@ supabase.auth.onAuthStateChange((_event, session) => {
             } else {
                 closeModal();
                 showToast('¡Inicio de sesión exitoso!');
-                // onAuthStateChange se encargará de redirigir
+                window.location.replace('dashboard.html'); // Redirección explícita al loguearse
             }
         });
     }
