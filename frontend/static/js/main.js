@@ -65,10 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.innerHTML = '';
 
         if (session) {
-            // Navegación para usuario con sesión iniciada
+            // Navegación para usuario con sesión iniciada (Botón "Mi Panel" eliminado)
             navLinks.innerHTML = `
-                <li><a href="dashboard.html" class="nav-btn-primary">Mi Panel</a></li>
-                <li><button id="logout-btn-nav" class="nav-btn">Cerrar Sesión</button></li>
+                <li><button id="logout-btn-nav" class="nav-btn-primary">Cerrar Sesión</button></li>
             `;
             document.getElementById('logout-btn-nav').addEventListener('click', async () => {
                 await supabase.auth.signOut();
