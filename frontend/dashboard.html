@@ -59,34 +59,119 @@
             <h2>Nuestros Servicios</h2>
             <div class="horizontal-scroll-container">
                 
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="Jota Streaming">
                     <img src="static/img/logo.png" alt="Jota Streaming">
                 </a>
                 
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="Netflix">
                     <img src="static/img/netflix.png" alt="Netflix">
                 </a>
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="HBO Max">
                     <img src="static/img/hbo.png" alt="HBO Max">
                 </a>
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="Disney+">
                     <img src="static/img/disney.png" alt="Disney+">
                 </a>
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="ChatGPT">
                     <img src="static/img/chatgpt.png" alt="ChatGPT">
                 </a>
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="Crunchyroll">
                     <img src="static/img/crunchyroll.png" alt="Crunchyroll">
                 </a>
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="Prime Video">
                     <img src="static/img/primevideo.png" alt="Prime Video">
                 </a>
-                <a href="#" class="service-card-horizontal">
+                <a href="#" class="service-card-horizontal" data-service="YouTube Premium">
                     <img src="static/img/yt.png" alt="YouTube Premium">
                 </a>
             </div>
         </section>
-        </main>
+
+        <section id="product-display-section" class="products-main" style="display: none;">
+            <div class="products-container">
+                
+                <aside class="filters-sidebar">
+                    <h3>Categorías</h3>
+                    <ul class="filter-list">
+                        <li><a href="#" class="active">Todos los Productos</a></li>
+                        <li><a href="#">Cuentas Completas</a></li>
+                        <li><a href="#">Perfiles</a></li>
+                        <li><a href="#">Renovaciones</a></li>
+                        <li><a href="#">Combos</a></li>
+                    </ul>
+                    <h3>Duración</h3>
+                     <ul class="filter-list">
+                        <li><a href="#">7 días</a></li>
+                        <li><a href="#">1 mes</a></li>
+                        <li><a href="#">3 meses</a></li>
+                        <li><a href="#">1 año</a></li>
+                    </ul>
+                </aside>
+
+                <section class="products-grid-container">
+                    <div class="products-header">
+                        <h2 id="service-product-title"></h2>
+                        <div class="search-bar">
+                            <input type="text" placeholder="Buscar...">
+                            <button>Buscar</button>
+                        </div>
+                    </div>
+
+                    <div id="products-grid" class="products-grid">
+                        
+                        <div class="product-card">
+                            <div class="card-img-container">
+                                <img src="https://i.pinimg.com/originals/a9/c2/92/a9c292f75b1e15918a55b355a1278183.jpg" alt="Producto Netflix">
+                                <span class="service-tag netflix-tag">NETFLIX</span>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="product-title">Perfil Mensual Full HD</h3>
+                                <p class="seller-info">Vendido por: <strong>YarexZJ</strong></p>
+                                <div class="price-stock-info">
+                                    <span class="price">S/ 9.90</span>
+                                    <span class="stock">Quedan 5</span>
+                                </div>
+                                <button class="buy-btn">Comprar Ahora</button>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                             <div class="card-img-container">
+                                <img src="https://i.pinimg.com/736x/2b/ff/4d/2bff4d54a2b975a2f854687a74442a8d.jpg" alt="Producto Netflix">
+                                 <span class="service-tag netflix-tag">NETFLIX</span>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="product-title">Cuenta Completa 1 Mes 4K</h3>
+                                 <p class="seller-info">Vendido por: <strong>JotaStore</strong></p>
+                                <div class="price-stock-info">
+                                    <span class="price">S/ 25.50</span>
+                                    <span class="stock">Quedan 2</span>
+                                </div>
+                                <button class="buy-btn">Comprar Ahora</button>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                             <div class="card-img-container">
+                                <img src="https://i.pinimg.com/originals/d7/21/50/d721503c8075e7a25695328994514a38.jpg" alt="Producto Netflix">
+                                 <span class="service-tag netflix-tag">NETFLIX</span>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="product-title">Cuenta por 7 Días</h3>
+                                 <p class="seller-info">Vendido por: <strong>YarexZJ</strong></p>
+                                <div class="price-stock-info">
+                                    <span class="price">S/ 5.00</span>
+                                    <span class="stock">Quedan 12</span>
+                                </div>
+                                <button class="buy-btn">Comprar Ahora</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
     
     <footer>
         <p>© 2025 Jota Streaming. Todos los derechos reservados.</p>
