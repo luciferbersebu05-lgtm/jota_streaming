@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Billetera - Jota Streaming</title>
+    <link rel="icon" type="image/x-icon" href="static/img/favicon.ico">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/wallet.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="toast-container"></div>
+
+    <header>
+        <nav>
+            <a href="index.html" class="logo-container">
+                <img src="static/img/logo.png" alt="Jota Streaming Logo" class="logo-img">
+                <span>Jota Streaming</span>
+            </a>
+            <ul id="nav-links" class="nav-links"></ul>
+        </nav>
+    </header>
+
+    <main class="wallet-main">
+        <nav class="breadcrumb">
+            <a href="dashboard.html">Home</a> / <span>Mi Billetera</span>
+        </nav>
+
+        <div class="wallet-grid">
+            <div class="wallet-actions">
+                <div class="wallet-card balance-card">
+                    <h4>Saldo Actual</h4>
+                    <p class="balance-amount">S/ 0.00</p>
+                    <div class="user-code">
+                        <span>Tu código de usuario:</span>
+                        <strong>UCOD765837</strong>
+                    </div>
+                </div>
+
+                <div class="wallet-card add-balance-card">
+                    <h4>Añadir Saldo a tu Billetera</h4>
+                    <div class="add-balance-form">
+                        <input type="number" placeholder="0.00" class="balance-input">
+                        <button class="add-balance-btn">Añadir Saldo</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wallet-movements">
+                <div class="wallet-card">
+                    <h3>Historial de Movimientos</h3>
+                    <table class="movements-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>22/09/2025</td>
+                                <td>Compra de cuenta - Netflix Perfil Mensual</td>
+                                <td class="expense">- S/ 9.90</td>
+                            </tr>
+                            <tr>
+                                <td>20/09/2025</td>
+                                <td>Recarga de saldo</td>
+                                <td class="income">+ S/ 50.00</td>
+                            </tr>
+                             <tr>
+                                <td>15/09/2025</td>
+                                <td>Compra de cuenta - Disney+</td>
+                                <td class="expense">- S/ 12.50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                     <div class="no-movements-placeholder" style="display: none;">
+                        <p>Aún no tienes movimientos en tu billetera.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2025 Jota Streaming. Todos los derechos reservados.</p>
+    </footer>
+    
+    <script type="module" src="static/js/main.js"></script>
+</body>
+</html>

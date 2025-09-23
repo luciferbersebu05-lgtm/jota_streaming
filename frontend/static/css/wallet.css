@@ -1,0 +1,152 @@
+/* static/css/wallet.css */
+
+.wallet-main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.breadcrumb {
+    margin-bottom: 2rem;
+    color: #b0b0b0;
+}
+
+.breadcrumb a {
+    color: #64ffda;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.wallet-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Columna izquierda más pequeña */
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.wallet-card {
+    background-color: #2a2a2a;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    color: #f0f0f0;
+}
+
+.wallet-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 100px; /* Para que se quede fijo al hacer scroll */
+}
+
+.wallet-card h3, .wallet-card h4 {
+    margin-top: 0;
+    color: #64ffda;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.balance-card .balance-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+    text-align: center;
+}
+
+.balance-card .user-code {
+    background-color: #3a3a3a;
+    padding: 0.8rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.user-code span {
+    display: block;
+    color: #b0b0b0;
+    margin-bottom: 0.3rem;
+}
+
+.add-balance-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.balance-input {
+    width: auto;
+    padding: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.balance-input:focus {
+    border-color: #64ffda;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
+}
+
+.add-balance-btn {
+    background-color: #64ffda;
+    color: #1a1a1a;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-balance-btn:hover {
+    background-color: #3dccad;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.movements-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.movements-table th, .movements-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.movements-table th {
+    color: #b0b0b0;
+    font-weight: 600;
+}
+
+.movements-table td.income {
+    color: #2ecc71; /* Verde para ingresos */
+    font-weight: 600;
+}
+
+.movements-table td.expense {
+    color: #e74c3c; /* Rojo para gastos */
+    font-weight: 600;
+}
+
+/* Estilos para responsividad */
+@media (max-width: 900px) {
+    .wallet-grid {
+        grid-template-columns: 1fr; /* Apila las columnas en pantallas pequeñas */
+    }
+    .wallet-actions {
+        position: static; /* Quitamos el sticky en móvil */
+    }
+}
