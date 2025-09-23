@@ -27,8 +27,19 @@ a.logo-container {
 .slide {
     min-width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
+    flex-shrink: 0;
+    /* Añadimos un fondo oscuro para los bordes */
+    background-color: #111;
+    /* Quitamos las propiedades de background-image de aquí */
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    /* Esta es la propiedad clave:
+       'contain' asegura que toda la imagen sea visible.
+       'cover' la recortaría como antes. */
+    object-fit: contain;
 }
 
 .slider-btn {
