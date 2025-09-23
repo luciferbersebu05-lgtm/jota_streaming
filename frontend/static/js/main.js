@@ -78,24 +78,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // --- MANEJO DE SESIÓN Y REDIRECCIÓN (VERSIÓN MEJORADA CON CORTOCIRCUITO) ---
+    // --- MANEJO DE SESIÓN Y REDIRECCIÓN (VERSIÓN MEJORADA CON LOGS DE COMBATE) ---
     async function handleInitialAuth() {
-        // Primero, ejecutamos el detector de bucles.
+        console.log("🚦 Ejecutando handleInitialAuth..."); // Log inicial
+
         const loopDetected = await checkReloadLoop();
-        if (loopDetected) return; // Si se detecta un bucle, no hacemos nada más.
+        if (loopDetected) {
+            console.error("🛑 CORTOCIRCUITO ACTIVADO. Deteniendo ejecución.");
+            return;
+        }
 
         const currentPage = window.location.pathname;
-        const { data: { session } } = await supabase.auth.getSession();
+        console.log("Página actual:", currentPage);
 
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        // Mostramos si encontramos una sesión o no.
+        if (session) {
+            console.log("✅ Sesión encontrada para:", session.user.email);
+        } else {
+            console.log("❌ No se encontró sesión (es null).");
+        }
+
+        // Lógica de redirección con logs
         if (session && (currentPage.endsWith('index.html') || currentPage === '/')) {
+            console.log("➡️ Decisión: Hay sesión y está en index. Redirigiendo a dashboard.html...");
             window.location.replace('dashboard.html');
             return;
         }
         
         if (!session && currentPage.endsWith('dashboard.html')) {
+            console.log("➡️ Decisión: No hay sesión y está en dashboard. Redirigiendo a index.html...");
             window.location.replace('index.html');
             return;
         }
+
+        console.log("👍 No se necesita redirección. Actualizando barra de navegación.");
         updateNav(session);
     }
     
@@ -117,11 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
             navLinks.innerHTML = `
                 <div class="nav-icon-menu">
                     <a href="#" class="nav-icon-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
                         <span>Mi billetera</span>
                     </a>
                     <a href="#" class="nav-icon-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                         <span>Mis compras</span>
                     </a>
                     <a href="#" class="nav-icon-item">
