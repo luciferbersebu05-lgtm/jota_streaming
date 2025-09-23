@@ -6,23 +6,29 @@
     padding: 0 2rem;
 }
 
+/* === AJUSTE DEL BREADCRUMB === */
 .breadcrumb {
     margin-bottom: 2rem;
     color: #b0b0b0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Espacio reducido entre elementos */
 }
 
 .breadcrumb a {
     color: #64ffda;
     text-decoration: none;
+    font-weight: 600;
 }
 
 .breadcrumb a:hover {
     text-decoration: underline;
 }
 
+/* === ESTILOS EXISTENTES (CON PEQUEÑOS AJUSTES) === */
 .wallet-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr; /* Columna izquierda más pequeña */
+    grid-template-columns: 1fr 2fr;
     gap: 2rem;
     align-items: flex-start;
 }
@@ -40,7 +46,7 @@
     flex-direction: column;
     gap: 2rem;
     position: sticky;
-    top: 100px; /* Para que se quede fijo al hacer scroll */
+    top: 100px;
 }
 
 .wallet-card h3, .wallet-card h4 {
@@ -73,6 +79,14 @@
     margin-bottom: 0.3rem;
 }
 
+.add-balance-card .instructions {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
 .add-balance-form {
     display: flex;
     flex-direction: column;
@@ -80,9 +94,8 @@
 }
 
 .balance-input {
-    width: auto;
-    padding: 1rem;
-    font-size: 1.5rem;
+    padding: 0.8rem;
+    font-size: 1.2rem;
     text-align: center;
     border: 1px solid #444;
     border-radius: 6px;
@@ -91,11 +104,18 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.balance-input:focus {
-    border-color: #64ffda;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
+.usd-equivalent {
+    text-align: center;
+    color: #b0b0b0;
+    font-size: 1rem;
+    margin: 0.5rem 0;
 }
+
+.usd-equivalent strong {
+    color: #64ffda;
+    font-size: 1.2rem;
+}
+
 
 .add-balance-btn {
     background-color: #64ffda;
@@ -112,7 +132,6 @@
 .add-balance-btn:hover {
     background-color: #3dccad;
     color: #ffffff;
-    transform: translateY(-2px);
 }
 
 .movements-table {
@@ -131,22 +150,66 @@
     font-weight: 600;
 }
 
-.movements-table td.income {
-    color: #2ecc71; /* Verde para ingresos */
-    font-weight: 600;
+.movements-table td.income { color: #2ecc71; font-weight: 600; }
+.movements-table td.expense { color: #e74c3c; font-weight: 600; }
+
+/* === NUEVOS ESTILOS PARA LA SECCIÓN DE PAGO === */
+.payment-methods-section {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #444;
 }
 
-.movements-table td.expense {
-    color: #e74c3c; /* Rojo para gastos */
-    font-weight: 600;
+.payment-methods-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #f0f0f0;
+    margin-bottom: 2rem;
 }
 
-/* Estilos para responsividad */
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.payment-steps ol {
+    padding-left: 1.5rem;
+    color: #b0b0b0;
+    line-height: 1.8;
+}
+
+.payment-steps ol li::marker {
+    color: #64ffda;
+    font-weight: bold;
+}
+
+.qr-code-card {
+    text-align: center;
+}
+
+.qr-code-card img {
+    max-width: 250px;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.qr-code-card .qr-info {
+    font-size: 1.1rem;
+    color: #b0b0b0;
+}
+.qr-code-card .qr-info strong {
+    color: #f0f0f0;
+}
+
+
+/* Responsividad */
 @media (max-width: 900px) {
     .wallet-grid {
-        grid-template-columns: 1fr; /* Apila las columnas en pantallas pequeñas */
+        grid-template-columns: 1fr;
     }
     .wallet-actions {
-        position: static; /* Quitamos el sticky en móvil */
+        position: static;
     }
 }

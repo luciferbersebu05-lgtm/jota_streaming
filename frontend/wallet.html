@@ -24,7 +24,9 @@
 
     <main class="wallet-main">
         <nav class="breadcrumb">
-            <a href="dashboard.html">Home</a> / <span>Mi Billetera</span>
+            <a href="dashboard.html">Home</a>
+            <span>/</span>
+            <span>Mi Billetera</span>
         </nav>
 
         <div class="wallet-grid">
@@ -40,9 +42,11 @@
 
                 <div class="wallet-card add-balance-card">
                     <h4>Añadir Saldo a tu Billetera</h4>
+                    <p class="instructions">Ingresa el monto en Soles (S/) que deseas recargar.</p>
                     <div class="add-balance-form">
-                        <input type="number" placeholder="0.00" class="balance-input">
-                        <button class="add-balance-btn">Añadir Saldo</button>
+                        <input type="number" id="soles-input" placeholder="Ej: 50.00" class="balance-input">
+                        <p id="usd-equivalent" class="usd-equivalent">Recibirás: <strong>$0.00 USD</strong></p>
+                        <button id="add-balance-trigger" class="add-balance-btn">Añadir Saldo</button>
                     </div>
                 </div>
             </div>
@@ -69,19 +73,30 @@
                                 <td>Recarga de saldo</td>
                                 <td class="income">+ S/ 50.00</td>
                             </tr>
-                             <tr>
-                                <td>15/09/2025</td>
-                                <td>Compra de cuenta - Disney+</td>
-                                <td class="expense">- S/ 12.50</td>
-                            </tr>
                         </tbody>
                     </table>
-                     <div class="no-movements-placeholder" style="display: none;">
-                        <p>Aún no tienes movimientos en tu billetera.</p>
-                    </div>
                 </div>
             </div>
         </div>
+
+        <section id="payment-methods-section" class="payment-methods-section" style="display: none;">
+            <h2>Completa tu Recarga</h2>
+            <div class="payment-grid">
+                <div class="wallet-card payment-steps">
+                    <h4>Pasos para recargar</h4>
+                    <ol>
+                        <li>Ingresa el monto en Soles en el campo de arriba.</li>
+                        <li>Escanea el código QR y realiza el pago por el mismo monto desde tu app Yape.</li>
+                        <li>Envía una captura de tu pago a nuestro WhatsApp de soporte para validar la recarga.</li>
+                    </ol>
+                </div>
+                <div class="wallet-card qr-code-card">
+                    <h4>Paga con Yape</h4>
+                    <img src="static/img/qr-yape.png" alt="Código QR de Yape">
+                    <p class="qr-info">Número: <strong>978756477</strong></p>
+                </div>
+            </div>
+        </section>
     </main>
     
     <footer>
@@ -89,5 +104,6 @@
     </footer>
     
     <script type="module" src="static/js/main.js"></script>
+    <script type="module" src="static/js/wallet.js"></script>
 </body>
 </html>
