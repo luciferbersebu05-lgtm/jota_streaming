@@ -24,36 +24,44 @@ a.logo-container {
     transition: transform 0.5s ease-in-out;
 }
 
+/* static/css/dashboard.css */
+
+/* Contenedor principal de cada slide */
 .slide {
     min-width: 100%;
     height: 100%;
     flex-shrink: 0;
-    position: relative; /* Necesario para que el filtro funcione bien */
-    overflow: hidden;   /* Oculta los bordes borrosos que se salen del cuadro */
-
-    /* --- ESTILOS PARA EL FONDO DIFUMINADO --- */
-    background-size: cover;      /* Cubre todo el espacio */
-    background-position: center; /* Centra la imagen de fondo */
-    
-    /* La magia del desenfoque y el brillo */
-    filter: blur(25px) brightness(0.7);
-
-    /* Hacemos que la imagen de fondo se escale un poco más para evitar
-       que se vean bordes transparentes por el desenfoque */
-    transform: scale(1.1);
+    position: relative; /* Actúa como ancla para los elementos internos */
+    overflow: hidden;   /* Mantiene las esquinas limpias */
+    background-color: #000; /* Un fondo negro por si la imagen no carga */
 }
 
-.slide img {
+/* Capa del fondo (La borrosa) */
+.slide-background {
+    position: absolute; /* Se posiciona relativo al .slide */
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    
-    /* Mantiene la imagen principal completa y sin recortes */
-    object-fit: contain;
+    z-index: 1; /* Se asegura que esté detrás de la imagen principal */
 
-    /* Un pequeño truco para asegurar que la imagen principal no herede
-       el filtro de desenfoque de su padre */
-    position: relative;
-    z-index: 2;
+    background-size: cover;
+    background-position: center;
+    
+    /* El desenfoque y brillo SOLO se aplican aquí */
+    filter: blur(25px) brightness(0.7);
+    transform: scale(1.1); /* Evita bordes vacíos por el blur */
+}
+
+/* Capa de la imagen (La nítida) */
+.slide-foreground {
+    position: relative; /* Se posiciona encima del fondo */
+    z-index: 2; /* Se asegura que esté delante del fondo */
+    width: 100%;
+    height: 100%;
+
+    /* Muestra la imagen completa, sin recortes */
+    object-fit: contain;
 }
 
 .slider-btn {
