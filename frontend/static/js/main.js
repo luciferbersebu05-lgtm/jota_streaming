@@ -94,53 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // --- LÓGICA DEL MENÚ DESPLEGABLE DE USUARIO ---
-    const menuToggleBtn = document.getElementById('menu-toggle-btn');
-    const userMenu = document.getElementById('user-menu-dropdown');
-
-    if (menuToggleBtn && userMenu) {
-        menuToggleBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation(); // Evita que el clic se propague al 'window'
-
-            // Calcula la posición del botón para alinear el menú
-            const rect = menuToggleBtn.getBoundingClientRect();
-            userMenu.style.top = `${rect.bottom + 10}px`; // 10px por debajo del botón
-            
-            // Alineamos el menú a la derecha del botón
-            // window.innerWidth - rect.right alinea el borde derecho del menú con el del botón
-            userMenu.style.right = `${window.innerWidth - rect.right}px`;
-            // Reseteamos 'left' por si acaso
-            userMenu.style.left = 'auto';
-
-            // Muestra u oculta el menú
-            userMenu.classList.toggle('show');
-        });
-
-        // Cierra el menú si se hace clic en cualquier otro lugar de la página
-        window.addEventListener('click', (event) => {
-            if (userMenu.classList.contains('show') && !userMenu.contains(event.target) && event.target !== menuToggleBtn) {
-                userMenu.classList.remove('show');
-            }
-        });
-
-        // Asignar función de logout al nuevo botón del menú
-        const logoutBtnMenu = document.getElementById('logout-btn-menu');
-        if(logoutBtnMenu) {
-            logoutBtnMenu.addEventListener('click', async (event) => {
-                event.preventDefault();
-                 try {
-                    const { error } = await supabase.auth.signOut();
-                    if (error) throw error;
-                    showToast('Has cerrado sesión.');
-                    window.location.replace('index.html');
-                } catch (error) {
-                    showToast('Error al cerrar sesión: ' + error.message, 'error');
-                }
-            });
-        }
-    }
-    
     // --- MANEJO DE SESIÓN Y REDIRECCIÓN ---
     async function handleInitialAuth() {
         const loopDetected = await checkReloadLoop();
@@ -220,9 +173,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = event.target.closest('a, button');
             if (!target) return;
             
+            // Prevenimos el comportamiento por defecto de los enlaces '#'
+            if (target.tagName === 'A' && target.getAttribute('href') === '#') {
+                event.preventDefault();
+            }
+
+            // --- ¡NUEVA LÓGICA PARA EL MENÚ AQUÍ! ---
+            if (target.id === 'menu-toggle-btn') {
+                const userMenu = document.getElementById('user-menu-dropdown');
+                if (userMenu) {
+                    const rect = target.getBoundingClientRect();
+                    userMenu.style.top = `${rect.bottom + 10}px`;
+                    userMenu.style.right = `${window.innerWidth - rect.right}px`;
+                    userMenu.style.left = 'auto';
+                    userMenu.classList.toggle('show');
+                }
+                return; // Salimos para no interferir con otros clics
+            }
+
             // Lógica para el botón de tema
             if (target.id === 'theme-toggle-btn') {
-                event.preventDefault();
                 toggleTheme();
             }
 
@@ -246,6 +216,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 openModal(registerModal);
             }
         });
+    }
+
+    // --- LÓGICA PARA CERRAR EL MENÚ DESPLEGABLE ---
+    // (Esta parte va fuera del if (navLinks) pero dentro del DOMContentLoaded)
+    const userMenu = document.getElementById('user-menu-dropdown');
+    if (userMenu) {
+        // Cierra el menú si se hace clic en cualquier otro lugar de la página
+        window.addEventListener('click', (event) => {
+            const menuToggleBtn = document.getElementById('menu-toggle-btn');
+            // Si el menú está visible Y el clic NO fue dentro del menú Y el clic NO fue en el botón que lo abre...
+            if (userMenu.classList.contains('show') && !userMenu.contains(event.target) && !menuToggleBtn.contains(event.target)) {
+                userMenu.classList.remove('show');
+            }
+        });
+    
+        // Asignar función de logout al nuevo botón del menú
+        const logoutBtnMenu = document.getElementById('logout-btn-menu');
+        if(logoutBtnMenu) {
+            logoutBtnMenu.addEventListener('click', async (event) => {
+                event.preventDefault();
+                 try {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
+                    showToast('Has cerrado sesión.');
+                    window.location.replace('index.html');
+                } catch (error) {
+                    showToast('Error al cerrar sesión: ' + error.message, 'error');
+                }
+            });
+        }
     }
 
     // --- LÓGICA PARA ABRIR Y CERRAR VENTANAS MODALES ---
