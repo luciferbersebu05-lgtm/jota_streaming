@@ -118,7 +118,7 @@ a.logo-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #2a2a2a;
+    background-color: var(--card-color);
     border-radius: 20px;
     padding: 1rem;
     border: 2px solid transparent; /* Borde transparente para una transición suave */
@@ -128,9 +128,8 @@ a.logo-container {
 /* --- EL EFECTO DE NEÓN AL PASAR EL MOUSE --- */
 .service-card-horizontal:hover {
     transform: translateY(-5px) scale(1.05); /* La tarjeta se levanta y crece un poco */
-    border-color: rgba(100, 255, 218, 0.5); /* Borde con el color de acento */
-    box-shadow: 0 0 15px rgba(100, 255, 218, 0.4), /* Sombra interior */
-                0 0 30px rgba(100, 255, 218, 0.3); /* Sombra exterior para el brillo */
+    border-color: color-mix(in srgb, var(--accent-color) 50%, transparent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent-color) 40%, transparent), 0 0 30px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 .service-card-horizontal img {
@@ -155,7 +154,7 @@ a.logo-container {
 
 .filters-sidebar {
     flex: 0 0 250px;
-    background-color: #222;
+    background-color: var(--bg-light);
     padding: 1.5rem;
     border-radius: 10px;
     position: sticky;
@@ -163,11 +162,11 @@ a.logo-container {
 }
 
 .filters-sidebar h3 {
-    color: #64ffda;
+    color: var(--accent-color);
     margin-top: 0;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--border-color);
     font-size: 1.2rem;
 }
 
@@ -192,8 +191,8 @@ a.logo-container {
 }
 
 .filters-sidebar .filter-list a.active {
-    background-color: rgba(100, 255, 218, 0.1);
-    color: #64ffda;
+    background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    color: var(--accent-color);
     font-weight: 600;
 }
 
@@ -216,7 +215,7 @@ a.logo-container {
 }
 
 #service-product-title .service-highlight { /* ID del H2 + clase del span */
-    color: #64ffda;
+    color: var(--accent-color);
 }
 
 .search-bar {
@@ -224,8 +223,8 @@ a.logo-container {
 }
 
 .search-bar input {
-    background-color: #3a3a3a;
-    border: 1px solid #444;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
     color: #f0f0f0;
     padding: 0.7rem 1rem;
     border-radius: 6px 0 0 6px;
@@ -234,8 +233,8 @@ a.logo-container {
 }
 
 .search-bar button {
-    background-color: #64ffda;
-    color: #1a1a1a;
+    background-color: var(--accent-color);
+    color: var(--button-text-color);
     border: none;
     padding: 0.7rem 1rem;
     border-radius: 0 6px 6px 0;
@@ -250,7 +249,7 @@ a.logo-container {
 }
 
 .product-card {
-    background-color: #2a2a2a;
+    background-color: var(--card-color);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -317,7 +316,7 @@ a.logo-container {
 .price {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #64ffda;
+    color: var(--accent-color);
 }
 
 .stock {

@@ -1,11 +1,36 @@
 // static/js/main.js
 
-// Importamos el cliente único desde nuestro nuevo archivo central.
 import { supabase } from './supabaseClient.js';
 
-// --- CONFIGURACIÓN ---
-const backendUrl = "https://jota-streaming-backend.onrender.com";
-const ADMIN_EMAIL = "luciferbersebu@gmail.com";
+// --- LÓGICA DEL TEMA (MODO CLARO/OSCURO) ---
+
+// Función para aplicar el tema
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.body.classList.add('light-theme');
+    } else {
+        document.body.classList.remove('light-theme');
+    }
+    // Actualizamos el botón en la NAV, si ya existe
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    if (themeToggleBtn) {
+        const span = themeToggleBtn.querySelector('span');
+        span.textContent = theme === 'light' ? 'Noche' : 'Día';
+    }
+}
+
+// Función para cambiar el tema
+function toggleTheme() {
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+}
+
+// Aplicamos el tema guardado tan pronto como carga la página
+const savedTheme = localStorage.getItem('theme') || 'dark';
+applyTheme(savedTheme);
+
 
 // --- LÓGICA DE LA APLICACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,30 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // === FUNCIÓN DETECTOR DE BUCLE DE RECARGA (CORTOCIRCUITO) ===
     // ==================================================================
     async function checkReloadLoop() {
-        const RELOAD_LIMIT = 15; // Límite de recargas.
-        const TIME_LIMIT_MS = 5000; // 5 segundos.
-
+        const RELOAD_LIMIT = 15;
+        const TIME_LIMIT_MS = 5000;
         try {
             const now = new Date().getTime();
             let reloadCount = parseInt(sessionStorage.getItem('reloadCount') || '0', 10);
             const lastReload = parseInt(sessionStorage.getItem('lastReloadTime') || '0', 10);
-
             if (now - lastReload > TIME_LIMIT_MS) {
                 reloadCount = 0;
             }
-
             reloadCount++;
-
             sessionStorage.setItem('reloadCount', reloadCount.toString());
             sessionStorage.setItem('lastReloadTime', now.toString());
-
             if (reloadCount > RELOAD_LIMIT) {
                 console.error("Bucle de recarga detectado. Cerrando sesión para proteger al usuario.");
-                
                 sessionStorage.clear();
                 await supabase.auth.signOut();
                 window.location.replace('/index.html');
-                
                 return true;
             }
         } catch (error) {
@@ -78,38 +96,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- MANEJO DE SESIÓN Y REDIRECCIÓN ---
     async function handleInitialAuth() {
-        console.log("🚦 Ejecutando handleInitialAuth...");
-
         const loopDetected = await checkReloadLoop();
         if (loopDetected) {
-            console.error("🛑 CORTOCIRCUITO ACTIVADO. Deteniendo ejecución.");
             return;
         }
-
         const currentPage = window.location.pathname;
-        console.log("Página actual:", currentPage);
-
         const { data: { session } } = await supabase.auth.getSession();
         
-        if (session) {
-            console.log("✅ Sesión encontrada para:", session.user.email);
-        } else {
-            console.log("❌ No se encontró sesión (es null).");
-        }
-
         if (session && (currentPage.endsWith('index.html') || currentPage === '/')) {
-            console.log("➡️ Decisión: Hay sesión y está en index. Redirigiendo a dashboard.html...");
             window.location.replace('dashboard.html');
             return;
         }
         
-        if (!session && currentPage.endsWith('dashboard.html')) {
-            console.log("➡️ Decisión: No hay sesión y está en dashboard. Redirigiendo a index.html...");
+        if (!session && (currentPage.endsWith('dashboard.html') || currentPage.endsWith('wallet.html'))) {
             window.location.replace('index.html');
             return;
         }
-
-        console.log("👍 No se necesita redirección. Actualizando barra de navegación.");
         updateNav(session);
     }
     
@@ -117,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     supabase.auth.onAuthStateChange((_event, session) => {
         updateNav(session);
-        if (!session && window.location.pathname.endsWith('dashboard.html')) {
+        if (!session && (window.location.pathname.endsWith('dashboard.html') || window.location.pathname.endsWith('wallet.html'))) {
             window.location.replace('index.html');
         }
     });
@@ -126,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateNav(session) {
         if (!navLinks) return;
         navLinks.innerHTML = '';
+        const currentTheme = localStorage.getItem('theme') || 'dark'; // Obtenemos el tema actual
+        const ADMIN_EMAIL = "luciferbersebu@gmail.com"; // Definido para acceso
 
         if (session) {
             navLinks.innerHTML = `
@@ -138,9 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                         <span>Mis compras</span>
                     </a>
-                    <a href="#" class="nav-icon-item">
+                    <a href="#" id="theme-toggle-btn" class="nav-icon-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-                        <span>Día</span>
+                        <span>${currentTheme === 'light' ? 'Noche' : 'Día'}</span>
                     </a>
                     <a href="#" class="nav-icon-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -163,12 +167,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // CORRECCIÓN: USAMOS DELEGACIÓN DE EVENTOS PARA LOS BOTONES DE NAVEGACIÓN
+    // MANEJADOR DE CLICS PARA LA BARRA DE NAVEGACIÓN
     if (navLinks) {
         navLinks.addEventListener('click', async (event) => {
-            const target = event.target.closest('button'); // Usamos closest para capturar clics dentro del botón
+            const target = event.target.closest('a, button');
+            if (!target) return;
             
-            if (target && target.id === 'logout-btn-nav') {
+            // Lógica para el botón de tema
+            if (target.id === 'theme-toggle-btn') {
+                event.preventDefault();
+                toggleTheme();
+            }
+
+            // Lógica para cerrar sesión
+            if (target.id === 'logout-btn-nav') {
                 try {
                     const { error } = await supabase.auth.signOut();
                     if (error) throw error;
@@ -179,11 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            if (target && target.id === 'login-btn-nav') {
+            // Lógica para login y register
+            if (target.id === 'login-btn-nav') {
                 openModal(loginModal);
             }
-
-            if (target && target.id === 'register-btn-nav') {
+            if (target.id === 'register-btn-nav') {
                 openModal(registerModal);
             }
         });
@@ -221,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!identifier.includes('@')) {
                 try {
-                    const response = await fetch(`${backendUrl}/api/get-email-by-username/${identifier}`);
+                    const response = await fetch(`https://jota-streaming-backend.onrender.com/api/get-email-by-username/${identifier}`);
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.error || 'Usuario no encontrado');
                     email = data.email;
@@ -278,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     description: document.getElementById('description').value,
                     price: parseFloat(document.getElementById('price').value)
                 };
-                const response = await fetch(`${backendUrl}/api/accounts`, {
+                const response = await fetch(`https://jota-streaming-backend.onrender.com/api/accounts`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -305,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { data: { session } } = await supabase.auth.getSession();
                  if (!session) throw new Error("Acceso no autorizado");
     
-                const response = await fetch(`${backendUrl}/api/admin/create-user`, {
+                const response = await fetch(`https://jota-streaming-backend.onrender.com/api/admin/create-user`, {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -328,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!accountsListDiv) return;
         accountsListDiv.innerHTML = '<p>Cargando cuentas...</p>';
         try {
-            const response = await fetch(`${backendUrl}/api/accounts/available`);
+            const response = await fetch(`https://jota-streaming-backend.onrender.com/api/accounts/available`);
             if (!response.ok) throw new Error('No se pudieron cargar las cuentas.');
             const accounts = await response.json();
             accountsListDiv.innerHTML = '';
@@ -366,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         showToast("Debes iniciar sesión para comprar.", 'error');
                         return;
                     }
-                    const response = await fetch(`${backendUrl}/api/accounts/${accountId}/sell`, {
+                    const response = await fetch(`https://jota-streaming-backend.onrender.com/api/accounts/${accountId}/sell`, {
                         method: 'PATCH',
                         headers: { 'Authorization': `Bearer ${session.access_token}` }
                     });
