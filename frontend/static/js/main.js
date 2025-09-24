@@ -94,6 +94,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
+    // --- LÓGICA DEL MENÚ DESPLEGABLE DE USUARIO ---
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    const userMenu = document.getElementById('user-menu-dropdown');
+
+    if (menuToggleBtn && userMenu) {
+        menuToggleBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation(); // Evita que el clic se propague al 'window'
+
+            // Calcula la posición del botón para alinear el menú
+            const rect = menuToggleBtn.getBoundingClientRect();
+            userMenu.style.top = `${rect.bottom + 10}px`; // 10px por debajo del botón
+            
+            // Alineamos el menú a la derecha del botón
+            // window.innerWidth - rect.right alinea el borde derecho del menú con el del botón
+            userMenu.style.right = `${window.innerWidth - rect.right}px`;
+            // Reseteamos 'left' por si acaso
+            userMenu.style.left = 'auto';
+
+            // Muestra u oculta el menú
+            userMenu.classList.toggle('show');
+        });
+
+        // Cierra el menú si se hace clic en cualquier otro lugar de la página
+        window.addEventListener('click', (event) => {
+            if (userMenu.classList.contains('show') && !userMenu.contains(event.target) && event.target !== menuToggleBtn) {
+                userMenu.classList.remove('show');
+            }
+        });
+
+        // Asignar función de logout al nuevo botón del menú
+        const logoutBtnMenu = document.getElementById('logout-btn-menu');
+        if(logoutBtnMenu) {
+            logoutBtnMenu.addEventListener('click', async (event) => {
+                event.preventDefault();
+                 try {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
+                    showToast('Has cerrado sesión.');
+                    window.location.replace('index.html');
+                } catch (error) {
+                    showToast('Error al cerrar sesión: ' + error.message, 'error');
+                }
+            });
+        }
+    }
+    
     // --- MANEJO DE SESIÓN Y REDIRECCIÓN ---
     async function handleInitialAuth() {
         const loopDetected = await checkReloadLoop();
@@ -146,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
                         <span>${currentTheme === 'light' ? 'Noche' : 'Día'}</span>
                     </a>
-                    <a href="#" class="nav-icon-item">
+                    <a href="#" id="menu-toggle-btn" class="nav-icon-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
                         <span>Menu</span>
                     </a>

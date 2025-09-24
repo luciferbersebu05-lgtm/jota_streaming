@@ -814,3 +814,108 @@ footer {
         height: 45px;
     }
 }
+
+/* ========================================= */
+/* === ESTILOS PARA EL MENÚ DESPLEGABLE DE USUARIO === */
+/* ========================================= */
+
+.user-menu-dropdown {
+    position: absolute; /* Esencial para posicionarlo donde queramos */
+    top: 65px; /* Posición inicial, JS la ajustará */
+    right: 2rem; /* Posición inicial, JS la ajustará */
+    background-color: var(--card-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 25px var(--shadow-heavy);
+    width: 280px;
+    z-index: 1100; /* Para que esté por encima de otros elementos */
+    overflow: hidden; /* Para que los bordes redondeados se apliquen a los hijos */
+    
+    /* Lo ocultamos por defecto con una transición suave */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.95);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+}
+
+/* Clase que mostrará el menú */
+.user-menu-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Cabecera del menú (Foto, nombre, rol) */
+.menu-profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.menu-profile-header img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 2px solid var(--accent-color);
+}
+
+.menu-profile-header .username {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.menu-profile-header .user-role {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.8rem;
+    border-radius: 15px;
+    margin-top: 0.5rem;
+    background-color: var(--accent-color);
+    color: var(--button-text-color);
+    text-transform: uppercase;
+}
+
+/* Lista de opciones del menú */
+.menu-options {
+    list-style: none;
+    padding: 0.5rem;
+    margin: 0;
+}
+
+.menu-options a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu-options a:hover {
+    background-color: var(--card-hover);
+    color: var(--text-primary);
+}
+
+.menu-options a svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+}
+
+/* Estilo especial para Cerrar Sesión */
+.menu-options a.logout-link {
+    color: #e74c3c; /* Un rojo para acciones de salida/peligro */
+}
+
+.menu-options a.logout-link:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
