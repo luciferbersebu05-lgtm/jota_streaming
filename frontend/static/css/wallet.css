@@ -6,10 +6,9 @@
     padding: 0 2rem;
 }
 
-/* === AJUSTE DEL BREADCRUMB === */
 .breadcrumb {
     margin-bottom: 2rem;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -26,7 +25,6 @@
     text-decoration: underline;
 }
 
-/* === ESTILOS EXISTENTES === */
 .wallet-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -38,8 +36,8 @@
     background-color: var(--card-color);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    color: #f0f0f0;
+    box-shadow: 0 4px 15px var(--shadow-color); /* CORREGIDO: Usar variable de tema */
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
 }
 
 .wallet-actions {
@@ -61,7 +59,7 @@
 .balance-card .balance-amount {
     font-size: 3rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
     margin: 0 0 1rem 0;
     text-align: center;
 }
@@ -76,12 +74,12 @@
 
 .user-code span {
     display: block;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     margin-bottom: 0.3rem;
 }
 
 .add-balance-card .instructions {
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     font-size: 0.9rem;
     text-align: center;
     margin-top: 0;
@@ -101,13 +99,13 @@
     border: 1px solid var(--border-color);
     border-radius: 6px;
     background-color: var(--input-bg);
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
     font-family: 'Poppins', sans-serif;
 }
 
 .usd-equivalent {
     text-align: center;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     font-size: 1rem;
     margin: 0.5rem 0;
 }
@@ -132,7 +130,7 @@
 
 .add-balance-btn:hover {
     background-color: var(--accent-darker);
-    color: #ffffff;
+    color: var(--button-text-color); /* CORREGIDO: Usar variable para consistencia */
 }
 
 .movements-table {
@@ -144,18 +142,16 @@
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     font-weight: 600;
 }
 
-/* === NUEVO ESTILO === */
 .no-movements-placeholder {
     text-align: center;
     padding: 2rem;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
 }
 
-/* === ESTILOS PARA LA SECCIÓN DE PAGO === */
 .payment-methods-section {
     margin-top: 4rem;
     padding-top: 2rem;
@@ -165,7 +161,7 @@
 .payment-methods-section h2 {
     text-align: center;
     font-size: 2rem;
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
     margin-bottom: 2rem;
 }
 
@@ -177,7 +173,7 @@
 
 .payment-steps ol {
     padding-left: 1.5rem;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     line-height: 1.8;
 }
 
@@ -199,10 +195,10 @@
 
 .qr-code-card .qr-info {
     font-size: 1.1rem;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
 }
 .qr-code-card .qr-info strong {
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
 }
 
 

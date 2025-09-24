@@ -24,8 +24,6 @@ a.logo-container {
     transition: transform 0.5s ease-in-out;
 }
 
-/* static/css/dashboard.css */
-
 /* Contenedor principal de cada slide */
 .slide {
     min-width: 100%;
@@ -44,11 +42,8 @@ a.logo-container {
     width: 100%;
     height: 100%;
     z-index: 1; /* Se asegura que esté detrás de la imagen principal */
-
     background-size: cover;
     background-position: center;
-    
-    /* El desenfoque y brillo SOLO se aplican aquí */
     filter: blur(25px) brightness(0.7);
     transform: scale(1.1); /* Evita bordes vacíos por el blur */
 }
@@ -59,9 +54,7 @@ a.logo-container {
     z-index: 2; /* Se asegura que esté delante del fondo */
     width: 100%;
     height: 100%;
-
-    /* Muestra la imagen completa, sin recortes */
-    object-fit: contain;
+    object-fit: contain; /* Muestra la imagen completa, sin recortes */
 }
 
 .slider-btn {
@@ -80,19 +73,17 @@ a.logo-container {
 .prev-btn { left: 10px; }
 .next-btn { right: 10px; }
 
-/* PEGA TODO ESTE BLOQUE A CONTINUACIÓN */
 
 /* --- ESTILOS PARA EL CARRUSEL DE SERVICIOS --- */
-
 .horizontal-scroll-section {
     padding: 1rem 5%; /* Espaciado alrededor de la sección */
-    max-width: 1200px;
+    max-width: 1400px; /* Incrementado para coincidir con products-main */
     margin: 2rem auto; /* Centra la sección y le da espacio vertical */
 }
 
 .horizontal-scroll-section h2 {
     font-size: 1.8rem;
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
     margin-bottom: 1.5rem;
     text-align: left;
 }
@@ -102,8 +93,6 @@ a.logo-container {
     overflow-x: auto;      /* ¡La magia del scroll horizontal! */
     gap: 20px;             /* Espacio entre las tarjetas */
     padding: 10px;         /* Pequeño padding para que el brillo no se corte */
-    
-    /* Efecto para ocultar la barra de scroll y que se vea más limpio */
     scrollbar-width: none; /* Para Firefox */
     -ms-overflow-style: none; /* Para Internet Explorer y Edge */
 }
@@ -125,7 +114,6 @@ a.logo-container {
     transition: all 0.3s ease; /* Transición para el efecto hover */
 }
 
-/* --- EL EFECTO DE NEÓN AL PASAR EL MOUSE --- */
 .service-card-horizontal:hover {
     transform: translateY(-5px) scale(1.05); /* La tarjeta se levanta y crece un poco */
     border-color: color-mix(in srgb, var(--accent-color) 50%, transparent);
@@ -139,7 +127,6 @@ a.logo-container {
 }
 
 /* --- ESTILOS PARA LA SECCIÓN DE PRODUCTOS MOSTRADA DINÁMICAMENTE --- */
-
 .products-main {
     max-width: 1400px;
     margin: 2rem auto;
@@ -178,7 +165,7 @@ a.logo-container {
 
 .filters-sidebar .filter-list a {
     display: block;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     text-decoration: none;
     padding: 0.6rem 0.8rem;
     border-radius: 6px;
@@ -186,12 +173,12 @@ a.logo-container {
 }
 
 .filters-sidebar .filter-list a:hover {
-    background-color: #3a3a3a;
-    color: #ffffff;
+    background-color: var(--card-hover); /* CORREGIDO: Usar variable de tema */
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
 }
 
 .filters-sidebar .filter-list a.active {
-    background-color: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    background-color: color-mix(in srgb, var(--accent-color) 15%, transparent); /* Aumentado a 15% para más visibilidad */
     color: var(--accent-color);
     font-weight: 600;
 }
@@ -211,10 +198,10 @@ a.logo-container {
 
 .products-header h2 {
     margin: 0;
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
 }
 
-#service-product-title .service-highlight { /* ID del H2 + clase del span */
+#service-product-title .service-highlight {
     color: var(--accent-color);
 }
 
@@ -225,7 +212,7 @@ a.logo-container {
 .search-bar input {
     background-color: var(--input-bg);
     border: 1px solid var(--border-color);
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
     padding: 0.7rem 1rem;
     border-radius: 6px 0 0 6px;
     border-right: none;
@@ -252,7 +239,7 @@ a.logo-container {
     background-color: var(--card-color);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px var(--shadow-color); /* CORREGIDO: Usar variable de tema */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -260,7 +247,7 @@ a.logo-container {
 
 .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 25px var(--shadow-heavy); /* CORREGIDO: Usar variable de tema */
 }
 
 .card-img-container {
@@ -296,12 +283,12 @@ a.logo-container {
 .product-title {
     margin: 0 0 0.5rem 0;
     font-size: 1.25rem;
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
 }
 
 .seller-info {
     font-size: 0.9rem;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     margin: 0 0 1rem 0;
 }
 
@@ -320,8 +307,8 @@ a.logo-container {
 }
 
 .stock {
-    background-color: #333;
-    color: #b0b0b0;
+    background-color: var(--input-bg); /* CORREGIDO: Usar variable de tema */
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     padding: 0.3rem 0.7rem;
     border-radius: 5px;
     font-size: 0.8rem;
@@ -330,4 +317,17 @@ a.logo-container {
 .product-card .buy-btn {
     width: 100%;
     margin-top: 1rem;
+    background-color: var(--accent-color);
+    color: var(--button-text-color);
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.product-card .buy-btn:hover {
+    background-color: var(--accent-darker);
 }

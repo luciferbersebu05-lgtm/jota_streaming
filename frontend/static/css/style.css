@@ -16,21 +16,21 @@
     --button-text-color: #1a1a1a;
 }
 
+/* === TEMA CLARO MEJORADO (MODO DÍA) === */
 body.light-theme {
-    /* Tema Claro */
-    --bg-color: #f0f2f5;
-    --bg-light: #ffffff;
-    --card-color: #ffffff;
-    --card-hover: #f8f8f8;
-    --text-primary: #1c1e21;
-    --text-secondary: #65676b;
-    --accent-color: #007bff;
-    --accent-darker: #0056b3;
-    --border-color: #ddd;
-    --input-bg: #e4e6eb;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --shadow-heavy: rgba(0, 0, 0, 0.15);
-    --button-text-color: #ffffff;
+    --bg-color: #f8f9fa;                     /* Fondo general gris muy claro */
+    --bg-light: #ffffff;                     /* Fondo de secciones principales blanco */
+    --card-color: #ffffff;                   /* Tarjetas blancas para que resalten */
+    --card-hover: #f1f3f5;                   /* Un hover muy sutil para las tarjetas */
+    --text-primary: #212529;                 /* Texto principal casi negro para alto contraste */
+    --text-secondary: #495057;               /* Texto secundario más oscuro y legible */
+    --accent-color: #0d6efd;                 /* Un azul moderno y accesible como acento */
+    --accent-darker: #0b5ed7;                /* Azul más oscuro para los hovers */
+    --border-color: #dee2e6;                 /* Borde más visible para separar elementos */
+    --input-bg: #ffffff;                     /* Fondo de inputs blanco, definido por el borde */
+    --shadow-color: rgba(0, 0, 0, 0.075);    /* Sombra más sutil y limpia */
+    --shadow-heavy: rgba(0, 0, 0, 0.15);     /* Sombra más pesada pero aún suave */
+    --button-text-color: #ffffff;            /* Texto blanco para botones con acento */
 }
 
 /* General Body and Font Styles */
@@ -97,7 +97,7 @@ nav {
 }
 
 .nav-links a {
-    color: #f0f0f0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
@@ -144,11 +144,8 @@ main {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 2rem;
-    color: #e0e0e0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
 }
-
-/* Hero Section */
-/* frontend/static/css/style.css */
 
 /* Hero Section */
 .hero {
@@ -159,39 +156,29 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-    /* MUY IMPORTANTE: Esto posiciona el video y el texto correctamente */
-    position: relative; 
-    overflow: hidden; /* Oculta cualquier parte del video que se desborde */
-    
-    /* Color de fondo que se mostrará si el video no carga */
-    background-color: #16161a; 
+    position: relative;
+    overflow: hidden;
+    background-color: #16161a;
 }
 
-/* Capa de video (detrás de todo) */
 .hero-background-video {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;   /* Hacemos que ocupe todo el contenedor */
-    height: 100%;  /* Hacemos que ocupe todo el contenedor */
-    
-    /* La propiedad clave que soluciona el problema */
-    object-fit: contain; 
-    
-    z-index: 1; /* Capa del fondo */
-    filter: brightness(0.6); /* Mantenemos el brillo bajo para la legibilidad */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+    filter: brightness(0.6);
 }
 
-/* Contenido del Hero (textos, botones) - se asegura que esté por encima del video */
 .hero h1,
 .hero p,
 .hero .cta-button {
     position: relative;
-    z-index: 2; /* Capa del contenido, por encima del video */
+    z-index: 2;
 }
 
-/* --- Estilos para el texto y botón que se mantienen igual --- */
 .hero h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
@@ -202,7 +189,7 @@ main {
 .hero p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    color: #b0b0b0;
+    color: #b0b0b0; /* Se mantiene gris claro para que contraste sobre el video oscuro */
 }
 
 .cta-button {
@@ -231,7 +218,7 @@ main {
 .services h2 {
     font-size: 2.5rem;
     margin-bottom: 2.5rem;
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable de tema */
     font-weight: 700;
 }
 
@@ -246,7 +233,7 @@ main {
     background-color: var(--card-color);
     padding: 1.5rem;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px var(--shadow-color); /* CORREGIDO: Usar variable de tema */
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     cursor: pointer;
@@ -254,7 +241,7 @@ main {
 
 .service-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 20px var(--shadow-heavy); /* CORREGIDO: Usar variable de tema */
     background-color: var(--card-hover);
 }
 
@@ -263,17 +250,17 @@ main {
     height: 60px;
     object-fit: contain;
     margin-bottom: 10px;
-    border-radius: 5px; /* Slight rounding for service card images */
+    border-radius: 5px;
 }
 
 /* Footer Styles */
 footer {
     text-align: center;
     padding: 2rem;
-    background-color: var(--bg-light);
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable de tema */
     background-color: var(--bg-light);
     margin-top: 3rem;
+    border-top: 1px solid var(--border-color); /* AÑADIDO para consistencia */
 }
 
 /* Modal Overlay (Login/Register) */
@@ -302,11 +289,11 @@ footer {
     background-color: var(--card-color);
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 30px var(--shadow-heavy); /* CORREGIDO: Usar variable */
     width: 90%;
     max-width: 450px;
     position: relative;
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable */
     transform: translateY(-20px);
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -323,13 +310,13 @@ footer {
     right: 20px;
     font-size: 2rem;
     font-weight: 300;
-    color: #999;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable */
     cursor: pointer;
     transition: color 0.2s ease;
 }
 
 .close-btn:hover {
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable */
 }
 
 .modal-content h2 {
@@ -344,7 +331,7 @@ footer {
     display: block;
     margin-bottom: 0.6rem;
     font-weight: 600;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable */
 }
 
 .modal-content form input[type="text"],
@@ -356,7 +343,7 @@ footer {
     border: 1px solid var(--border-color);
     border-radius: 6px;
     background-color: var(--input-bg);
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable */
     font-size: 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -364,9 +351,9 @@ footer {
 .modal-content form input[type="text"]:focus,
 .modal-content form input[type="email"]:focus,
 .modal-content form input[type="password"]:focus {
-    border-color: #64ffda;
+    border-color: var(--accent-color); /* CORREGIDO: Usar variable */
     outline: none;
-    box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent); /* CORREGIDO: Sombra dinámica */
 }
 
 .modal-content form button {
@@ -383,9 +370,8 @@ footer {
 }
 
 .modal-content form button:hover {
-    background-color: #3dccad;
+    background-color: var(--accent-darker); /* CORREGIDO: Usar variable */
     transform: translateY(-2px);
-    color: #ffffff;
 }
 
 /* Toast Notifications */
@@ -429,22 +415,20 @@ footer {
 
 /* --- DASHBOARD SPECIFIC STYLES --- */
 
-/* Main content for dashboard to push footer down */
 .dashboard-main {
-    min-height: calc(100vh - 120px); /* Adjust based on header/footer height */
-    padding-bottom: 2rem; /* Give some space above footer */
+    min-height: calc(100vh - 120px);
+    padding-bottom: 2rem;
 }
 
-/* Hero Slider Container */
 .hero-slider-container {
     position: relative;
     width: 100%;
-    max-width: 100%; /* Ensure it spans full width */
-    height: 400px; /* Adjust height as needed */
-    margin: 0 auto 3rem auto; /* Center and add margin below */
+    max-width: 100%;
+    height: 400px;
+    margin: 0 auto 3rem auto;
     overflow: hidden;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px var(--shadow-color); /* CORREGIDO: Usar variable */
 }
 
 .hero-slider {
@@ -458,7 +442,7 @@ footer {
     height: 100%;
     background-size: cover;
     background-position: center;
-    flex-shrink: 0; /* Prevent slides from shrinking */
+    flex-shrink: 0;
 }
 
 .slider-btn {
@@ -472,7 +456,7 @@ footer {
     cursor: pointer;
     font-size: 2rem;
     z-index: 10;
-    border-radius: 50%; /* Make buttons round */
+    border-radius: 50%;
     width: 50px;
     height: 50px;
     display: flex;
@@ -496,18 +480,18 @@ footer {
 
 /* Admin Panel Styles */
 .admin-panel {
-    background-color: #2a2a2a;
+    background-color: var(--card-color); /* CORREGIDO: Usar variable */
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px var(--shadow-color); /* CORREGIDO: Usar variable */
 }
 
 .admin-panel h3 {
-    color: #64ffda;
+    color: var(--accent-color); /* CORREGIDO: Usar variable */
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    border-bottom: 2px solid #333;
+    border-bottom: 2px solid var(--border-color); /* CORREGIDO: Usar variable */
     padding-bottom: 10px;
 }
 
@@ -518,7 +502,7 @@ footer {
 
 .admin-panel form label {
     font-weight: 600;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable */
     margin-bottom: 0.5rem;
     display: block;
 }
@@ -527,16 +511,16 @@ footer {
 .admin-panel form input[type="password"] {
     width: calc(100% - 20px);
     padding: 0.8rem 10px;
-    border: 1px solid #444;
+    border: 1px solid var(--border-color); /* CORREGIDO: Usar variable */
     border-radius: 6px;
-    background-color: #3a3a3a;
-    color: #f0f0f0;
+    background-color: var(--input-bg); /* CORREGIDO: Usar variable */
+    color: var(--text-primary); /* CORREGIDO: Usar variable */
     font-size: 1rem;
 }
 
 .admin-panel form button {
-    background-color: #64ffda;
-    color: #1a1a1a;
+    background-color: var(--accent-color); /* CORREGIDO: Usar variable */
+    color: var(--button-text-color); /* CORREGIDO: Usar variable */
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 8px;
@@ -547,29 +531,28 @@ footer {
 }
 
 .admin-panel form button:hover {
-    background-color: #3dccad;
-    color: #ffffff;
+    background-color: var(--accent-darker); /* CORREGIDO: Usar variable */
 }
 
 /* User Dashboard Sections (Account Management, etc.) */
 .dashboard-section {
-    background-color: #2a2a2a;
+    background-color: var(--card-color); /* CORREGIDO: Usar variable */
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px var(--shadow-color); /* CORREGIDO: Usar variable */
 }
 
 .dashboard-section h2 {
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable */
     margin-bottom: 1.5rem;
     font-size: 2rem;
-    border-bottom: 2px solid #333;
+    border-bottom: 2px solid var(--border-color); /* CORREGIDO: Usar variable */
     padding-bottom: 10px;
 }
 
 .dashboard-section p {
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable */
     margin-bottom: 1rem;
 }
 
@@ -584,7 +567,7 @@ footer {
 
 .dashboard-section form label {
     font-weight: 600;
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable */
     display: block;
     margin-bottom: 0.5rem;
 }
@@ -593,24 +576,24 @@ footer {
 .dashboard-section form select {
     width: calc(100% - 20px);
     padding: 0.8rem 10px;
-    border: 1px solid #444;
+    border: 1px solid var(--border-color); /* CORREGIDO: Usar variable */
     border-radius: 6px;
-    background-color: #3a3a3a;
-    color: #f0f0f0;
+    background-color: var(--input-bg); /* CORREGIDO: Usar variable */
+    color: var(--text-primary); /* CORREGIDO: Usar variable */
     font-size: 1rem;
-    appearance: none; /* Remove default select arrow */
+    appearance: none;
 }
 
 .dashboard-section form input:focus,
 .dashboard-section form select:focus {
-    border-color: #64ffda;
+    border-color: var(--accent-color); /* CORREGIDO: Usar variable */
     outline: none;
-    box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 25%, transparent); /* CORREGIDO: Sombra dinámica */
 }
 
 .dashboard-section form button {
-    background-color: #64ffda;
-    color: #1a1a1a;
+    background-color: var(--accent-color); /* CORREGIDO: Usar variable */
+    color: var(--button-text-color); /* CORREGIDO: Usar variable */
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 8px;
@@ -618,12 +601,11 @@ footer {
     font-size: 1rem;
     font-weight: 600;
     transition: background-color 0.3s ease;
-    align-self: flex-end; /* Align button to the bottom */
+    align-self: flex-end;
 }
 
 .dashboard-section form button:hover {
-    background-color: #3dccad;
-    color: #ffffff;
+    background-color: var(--accent-darker); /* CORREGIDO: Usar variable */
 }
 
 /* Account List Display */
@@ -635,9 +617,9 @@ footer {
 }
 
 .product-card-grid {
-    background-color: #2a2a2a;
+    background-color: var(--card-color); /* CORREGIDO: Usar variable */
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px var(--shadow-color); /* CORREGIDO: Usar variable */
     padding: 1.5rem;
     text-align: center;
     position: relative;
@@ -646,7 +628,7 @@ footer {
 
 .product-card-grid:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 20px var(--shadow-heavy); /* CORREGIDO: Usar variable */
 }
 
 .product-card-grid img {
@@ -654,17 +636,17 @@ footer {
     height: 80px;
     object-fit: contain;
     margin-bottom: 1rem;
-    border-radius: 8px; /* Rounded corners for product images */
+    border-radius: 8px;
 }
 
 .product-card-grid h3 {
-    color: #64ffda;
+    color: var(--accent-color); /* CORREGIDO: Usar variable */
     font-size: 1.4rem;
     margin-bottom: 0.5rem;
 }
 
 .product-card-grid p {
-    color: #b0b0b0;
+    color: var(--text-secondary); /* CORREGIDO: Usar variable */
     font-size: 0.95rem;
     margin-bottom: 1rem;
     line-height: 1.4;
@@ -673,7 +655,7 @@ footer {
 .product-card-grid .price {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #f0f0f0;
+    color: var(--text-primary); /* CORREGIDO: Usar variable */
     margin-bottom: 1.5rem;
 }
 
@@ -681,7 +663,7 @@ footer {
     position: absolute;
     top: 15px;
     left: 15px;
-    background-color: #2ecc71; /* Green for available */
+    background-color: #2ecc71;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -690,8 +672,8 @@ footer {
 }
 
 .buy-btn {
-    background-color: #64ffda;
-    color: #1a1a1a;
+    background-color: var(--accent-color); /* CORREGIDO: Usar variable */
+    color: var(--button-text-color); /* CORREGIDO: Usar variable */
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 8px;
@@ -703,24 +685,23 @@ footer {
 }
 
 .buy-btn:hover {
-    background-color: #3dccad;
-    color: #ffffff;
+    background-color: var(--accent-darker); /* CORREGIDO: Usar variable */
 }
 
 /* --- Estilos para el Menú de Iconos en el Dashboard --- */
 .nav-icon-menu {
     display: flex;
     align-items: center;
-    gap: 1.5rem; /* Espacio entre cada ícono */
-    margin-right: 1.5rem; /* Espacio entre los íconos y el botón "Cerrar Sesión" */
+    gap: 1.5rem;
+    margin-right: 1.5rem;
 }
 
 .nav-icon-item {
     display: flex;
-    flex-direction: column; /* Pone el ícono arriba y el texto abajo */
+    flex-direction: column;
     align-items: center;
     text-decoration: none;
-    color: #b0b0b0; /* Un gris claro para el estado normal */
+    color: var(--text-secondary); /* CORREGIDO: Usar variable */
     transition: color 0.3s ease;
 }
 
@@ -731,72 +712,68 @@ footer {
 .nav-icon-item svg {
     width: 24px;
     height: 24px;
-    stroke-width: 2; /* Grosor de la línea del ícono */
+    stroke-width: 2;
 }
 
 .nav-icon-item span {
-    font-size: 0.75rem; /* Tamaño de letra pequeño para el texto */
+    font-size: 0.75rem;
     margin-top: 4px;
     font-weight: 500;
 }
 
 /* Responsive Design */
 
-/* --- Para Tablets y Móviles Grandes (hasta 768px) --- */
 @media (max-width: 768px) {
     nav {
         flex-direction: column;
         padding: 1rem;
-        gap: 1rem; /* Espacio entre el logo y los links */
+        gap: 1rem;
     }
 
     .logo-container {
-        margin-bottom: 0; /* Quitamos el margen inferior que no necesitamos */
+        margin-bottom: 0;
     }
 
     .nav-links {
         flex-wrap: wrap;
         justify-content: center;
-        gap: 0.5rem 1rem; /* Ajustamos el espacio entre botones */
+        gap: 0.5rem 1rem;
     }
 
-    /* Hero Section optimizada */
     .hero {
-        min-height: 80vh; /* Hacemos el Hero un poco más corto en vertical */
-        padding: 3rem 1.5rem; /* Reducimos el espaciado */
+        min-height: 80vh;
+        padding: 3rem 1.5rem;
     }
 
     .hero h1 {
-        font-size: 2.5rem; /* Título grande pero adaptado */
-        line-height: 1.2;  /* Hacemos el texto del título más compacto */
+        font-size: 2.5rem;
+        line-height: 1.2;
     }
 
     .hero p {
-        font-size: 1.1rem; /* Hacemos el subtítulo un poco más pequeño */
+        font-size: 1.1rem;
     }
     
     .cta-button {
-        padding: 0.8rem 1.8rem; /* Botón ligeramente más compacto */
+        padding: 0.8rem 1.8rem;
         font-size: 1rem;
     }
 
-    /* Main content y Services */
     main {
-        padding: 0 1.5rem; /* Ajustamos el padding general */
+        padding: 0 1.5rem;
     }
     
     .services h2 {
         font-size: 2rem;
     }
 
-    /* Organizamos los servicios en 4 columnas para tablets */
     .service-cards-container {
         grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
     }
 
     .service-card {
-        padding: 1rem; /* Hacemos las tarjetas de servicio más pequeñas */
+        padding: 1rem;
     }
 
     .service-card img {
@@ -804,21 +781,18 @@ footer {
         height: 50px;
     }
 
-    /* Modales */
     .modal-content {
         padding: 2rem 1.5rem;
     }
 }
 
-
-/* --- Para Móviles Pequeños (hasta 480px) --- */
 @media (max-width: 480px) {
     .hero {
-        min-height: 75vh; /* Hacemos el Hero aún más corto */
+        min-height: 75vh;
     }
     
     .hero h1 {
-        font-size: 2.1rem; /* Reducimos un poco más el título */
+        font-size: 2.1rem;
     }
     
     .nav-links {
@@ -826,7 +800,6 @@ footer {
         justify-content: space-around;
     }
     
-    /* Pasamos a 3 columnas para que los íconos no sean muy pequeños */
     .service-cards-container {
         grid-template-columns: repeat(3, 1fr);
         gap: 0.8rem;
